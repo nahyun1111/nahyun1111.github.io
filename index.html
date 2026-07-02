@@ -39,11 +39,33 @@
   body{
     font-family:'IBM Plex Sans KR', sans-serif;
     background:#43506000; background-color:#2b3646;
-    display:flex; justify-content:center; min-height:100vh; color:var(--ink);
+    display:flex; justify-content:center; min-height:100vh; min-height:100dvh; color:var(--ink);
   }
   .phone{
-    width:100%; max-width:420px; min-height:100vh; background:var(--bg);
+    width:100%; max-width:420px; min-height:100vh; min-height:100dvh; background:var(--bg);
     display:flex; flex-direction:column; position:relative;
+  }
+
+  /* ── 세로(9:16) 화면 맞춤: 한 화면에 더 들어가도록 컴팩트하게 ── */
+  @media (max-height: 860px){
+    .topbar{ padding:10px 16px 9px; }
+    .topbar::after{ height:6px; margin:9px -16px -9px; }
+    .app-title{ font-size:20px; }
+    main{ padding:12px 12px 86px; }
+    .card{ padding:14px; margin-bottom:10px; border-radius:12px; }
+    .card__label{ margin-bottom:8px; }
+    .big{ font-size:23px; }
+    .sub{ font-size:15px; margin-top:5px; }
+    .btn{ padding:14px; font-size:17px; }
+    .btn--ghost{ font-size:15px; }
+    .mic-btn{ width:92px; height:92px; font-size:38px; }
+    nav{ padding:4px 4px calc(7px + env(safe-area-inset-bottom)); }
+    nav button{ font-size:12px; padding:5px 2px; }
+    nav button .ic{ font-size:20px; }
+    input[type=range]{ margin-top:8px; }
+    .auth-glove{ font-size:56px; margin-bottom:10px; }
+    .auth-logo{ font-size:29px; }
+    .auth-screen{ padding:24px 22px calc(20px + env(safe-area-inset-bottom)); }
   }
 
   /* ── 시그니처: 해저드 스트라이프 헤더 ── */
@@ -60,12 +82,12 @@
   }
   .lang-chip.on{ background:var(--safety); border-color:var(--safety); color:var(--ink); }
 
-  main{ flex:1; overflow-y:auto; padding:16px 16px 96px; }
+  main{ flex:1; overflow-y:auto; padding:14px 14px 92px; }
   .screen{ display:none; }
   .screen.show{ display:block; animation:fadein .18s ease; }
   @keyframes fadein{ from{opacity:0; transform:translateY(4px);} to{opacity:1;} }
 
-  .card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; margin-bottom:14px; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:11px; }
   .card__label{
     display:inline-block; font-size:13px; font-weight:700; letter-spacing:1px;
     color:var(--steel); text-transform:uppercase; margin-bottom:10px;
@@ -198,10 +220,10 @@
     display:flex; flex-direction:column; overflow-y:auto;
   }
   #authFlow::before{ content:""; position:absolute; top:0; left:0; right:0; height:8px; background:var(--hazard); }
-  .auth-screen{ flex:1; display:none; flex-direction:column; padding:36px 26px calc(28px + env(safe-area-inset-bottom)); }
+  .auth-screen{ flex:1; display:none; flex-direction:column; padding:22px 22px calc(18px + env(safe-area-inset-bottom)); }
   .auth-screen.show{ display:flex; }
   .auth-hero{ flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
-  .auth-glove{ font-size:72px; margin-bottom:14px; }
+  .auth-glove{ font-size:60px; margin-bottom:10px; }
   .auth-logo{ font-family:'Black Han Sans'; font-size:34px; color:#fff; line-height:1.2; }
   .auth-logo .accent{ color:var(--safety); }
   .auth-tag{ color:#9AA7B4; font-size:16px; margin-top:12px; line-height:1.5; }
@@ -217,18 +239,18 @@
   .auth-switch b{ color:var(--safety); cursor:pointer; }
   .auth-err{ color:#ff9a8f; font-size:13px; font-weight:700; min-height:18px; margin-top:2px; }
 
-  .onb-title{ font-family:'Black Han Sans'; font-size:24px; color:#fff; margin-bottom:6px; }
-  .onb-sub{ color:#9AA7B4; font-size:15px; margin-bottom:22px; line-height:1.5; }
-  .onb-label{ color:var(--safety); font-size:13px; font-weight:800; letter-spacing:1px; margin:14px 0 8px; }
+  .onb-title{ font-family:'Black Han Sans'; font-size:22px; color:#fff; margin-bottom:4px; }
+  .onb-sub{ color:#9AA7B4; font-size:14px; margin-bottom:14px; line-height:1.45; }
+  .onb-label{ color:var(--safety); font-size:13px; font-weight:800; letter-spacing:1px; margin:10px 0 6px; }
   .site-grid{ display:grid; grid-template-columns:1fr 1fr; gap:9px; }
-  .site-grid button{ padding:15px 8px; border:2px solid #3a4657; background:#232d3c; color:#cfd6dd;
+  .site-grid button{ padding:12px 8px; border:2px solid #3a4657; background:#232d3c; color:#cfd6dd;
     border-radius:12px; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; text-align:left; line-height:1.35; }
   .site-grid button .sub{ display:block; font-size:12px; color:#7d8b99; margin-top:3px; }
   .site-grid button.sel{ border-color:var(--safety); background:#2f3a49; color:#fff; }
-  .onb-input{ width:100%; padding:15px; border-radius:12px; border:2px solid #3a4657; background:#232d3c;
+  .onb-input{ width:100%; padding:13px; border-radius:12px; border:2px solid #3a4657; background:#232d3c;
     color:#fff; font-family:inherit; font-size:18px; font-weight:700; }
   .onb-input::placeholder{ color:#6B7885; font-weight:400; }
-  .onb-next{ width:100%; border:none; border-radius:12px; padding:17px; margin-top:8px;
+  .onb-next{ width:100%; border:none; border-radius:12px; padding:15px; margin-top:8px;
     font-family:inherit; font-size:18px; font-weight:800; background:var(--safety); color:var(--ink); cursor:pointer; }
   .onb-next:disabled{ background:#3a4657; color:#6B7885; cursor:not-allowed; }
 </style>
@@ -281,7 +303,11 @@
         <button data-site="성서 3공단" data-job="그라인더·연삭">성서 3공단<span class="sub">그라인더·연삭</span></button>
         <button data-site="성서 4공단" data-job="전기·전자 조립">성서 4공단<span class="sub">전기·전자 조립</span></button>
         <button data-site="성서 5차단지" data-job="섬유·재봉">성서 5차단지<span class="sub">섬유·재봉</span></button>
-        <button data-site="기타 작업장" data-job="반복작업">기타 작업장<span class="sub">직접 입력</span></button>
+        <button data-site="기타 작업장" data-job="">기타 작업장<span class="sub">직접 입력</span></button>
+      </div>
+      <div id="customJobWrap" class="hidden">
+        <div class="onb-label">무슨 일을 하세요?</div>
+        <input class="onb-input" id="customJob" placeholder="예: 용접, 도장, 목공, 포장 등" maxlength="20" autocomplete="off" />
       </div>
       <div style="flex:1"></div>
       <button class="onb-next" id="btnSiteNext" disabled>다음</button>
@@ -325,8 +351,8 @@
     <div class="topbar__row">
       <div class="app-title">성서 <span class="accent">손목 지킴이</span></div>
       <div class="lang-chips" id="langChips">
-        <button class="lang-chip on" data-lang="ko">표준</button>
-        <button class="lang-chip" data-lang="dg">사투리</button>
+        <button class="lang-chip" data-lang="ko">표준</button>
+        <button class="lang-chip on" data-lang="dg">사투리</button>
         <button class="lang-chip" data-lang="vi">VI</button>
         <button class="lang-chip" data-lang="en">EN</button>
       </div>
@@ -344,12 +370,12 @@
       </div>
 
       <div class="card">
-        <span class="card__label" id="lblTodayCheck">오늘의 손 체크</span>
+        <span class="card__label" id="lblTodayCheck">오늘의 몸 체크</span>
         <div class="today-check">
           <div class="today-check__icon" id="todayIcon">🖐️</div>
           <div>
             <div style="font-size:18px; font-weight:700;" id="todayStatus">아직 체크 전이에요</div>
-            <div class="sub" style="margin-top:2px; font-size:15px;" id="todayStatusSub">주먹 쥐기 · 손가락 벌리기 · 3초 버티기</div>
+            <div class="sub" style="margin-top:2px; font-size:14px;" id="todayStatusSub">🖐️ 손목과 💪 어깨, 두 가지를 체크해야 해요</div>
           </div>
         </div>
         <button class="btn btn--main" style="margin-top:14px;" id="btnGoCheck">지금 손 체크 하기</button>
@@ -359,7 +385,7 @@
         <span class="card__label" id="lblHeat">폭염 모드 · 개정 산안법 기준</span>
         <div style="display:flex; align-items:baseline; gap:8px;">
           <div class="big" style="font-size:34px;" id="heatTemp">29℃</div>
-          <div class="sub" style="margin-top:0;" id="lblFeelTemp">체감온도 (시연용 수동 입력)</div>
+          <div class="sub" style="margin-top:0;" id="lblFeelTemp">체감온도</div>
         </div>
         <div class="heat-gauge">
           <div class="heat-track"><div class="heat-cursor" id="heatCursor" style="left:30%"></div></div>
@@ -367,14 +393,14 @@
         </div>
         <div class="heat-status" id="heatStatus">✅ 정상 범위입니다.</div>
         <input type="range" id="heatSlider" min="25" max="40" step="0.5" value="29" />
+        <button class="btn btn--ghost" id="btnHeatGeo" style="margin-top:8px;">📡 내 위치 체감온도 자동으로 맞추기</button>
+        <div class="sub" id="heatGeoNote" style="font-size:13px; margin-top:6px;"></div>
         <button class="btn btn--ghost" id="btnHeatSpeak" style="margin-top:8px;">🔊 음성으로 안내 듣기</button>
       </div>
 
-      <div class="card">
-        <div class="disclaimer" id="disclaimerText">
-          ⚠️ 본 앱은 의료기기가 아니며 질병을 진단하지 않습니다. 손 상태의 <b>변화</b>를 알려드릴 뿐이며,
-          통증이 계속되면 근로자건강센터(1577-6497) 또는 병원과 상담하세요. 산재보험은 여러분의 권리입니다.
-        </div>
+      <div class="disclaimer" id="disclaimerText" style="padding:2px 6px 8px;">
+        ⚠️ 본 앱은 의료기기가 아니며 질병을 진단하지 않습니다. 손 상태의 <b>변화</b>를 알려드릴 뿐이며,
+        통증이 계속되면 근로자건강센터(1577-6497) 또는 병원과 상담하세요. 산재보험은 여러분의 권리입니다.
       </div>
     </section>
 
@@ -385,10 +411,10 @@
         <button id="modeShoulder">💪 어깨</button>
       </div>
       <div class="routine-steps" id="routineSteps">
-        <div class="rstep" data-step="1">① 손 등록</div>
-        <div class="rstep" data-step="2">② 주먹 5회</div>
-        <div class="rstep" data-step="3">③ 쫙 벌리기</div>
-        <div class="rstep" data-step="4">④ 3초 버티기</div>
+        <div class="rstep" id="rstep1" data-step="1">① 손 등록</div>
+        <div class="rstep" id="rstep2" data-step="2">② 주먹 5회</div>
+        <div class="rstep" id="rstep3" data-step="3">③ 쫙 벌리기</div>
+        <div class="rstep" id="rstep4" data-step="4">④ 3초 버티기</div>
       </div>
       <div class="cam-wrap">
         <video id="camVideo" autoplay playsinline muted></video>
@@ -404,8 +430,8 @@
     <!-- ═══ 청력 자가체크 (그라인더·프레스 등 소음작업) ═══ -->
     <section class="screen" id="screen-hearing">
       <div class="card">
-        <span class="card__label">소음성 난청 자가체크 · 그라인더/프레스 작업자</span>
-        <div class="sub" style="font-size:15px;">
+        <span class="card__label" id="lblHearTitle">소음성 난청 자가체크 · 그라인더/프레스 작업자</span>
+        <div class="sub" style="font-size:15px;" id="hearIntro">
           소음성 난청은 <b>고음(4,000Hz 부근)부터 조용히</b> 시작됩니다. 본인은 눈치채기 어렵습니다.<br>
           📢 조용한 곳에서, <b>이어폰 착용</b>, 미디어 볼륨 50%로 맞추고 시작하세요.
         </div>
@@ -413,7 +439,7 @@
       </div>
 
       <div class="card hidden" id="toneCard">
-        <span class="card__label">1단계 · 주파수별 소리 듣기</span>
+        <span class="card__label" id="lblToneTitle">1단계 · 주파수별 소리 듣기</span>
         <div class="hear-progress" id="toneProgress"></div>
         <div class="tone-freq" id="toneFreq">저주파 500Hz</div>
         <div class="tone-level" id="toneLevel">아주 작은 소리부터 들려드립니다</div>
@@ -425,7 +451,7 @@
       </div>
 
       <div class="card hidden" id="wordCard">
-        <span class="card__label">2단계 · 말소리 구분 (고음 자음 ㅅ·ㅈ·ㅊ)</span>
+        <span class="card__label" id="lblWordTitle">2단계 · 말소리 구분 (고음 자음 ㅅ·ㅈ·ㅊ)</span>
         <div class="hear-progress" id="wordProgress"></div>
         <div class="tone-level" id="wordBandLabel">둘 중 어떤 단어가 들렸나요?</div>
         <button class="btn btn--dark" id="btnWordPlay">🔊 단어 듣기 (다시 듣기 가능)</button>
@@ -433,9 +459,9 @@
       </div>
 
       <div class="card hidden" id="hearResultCard">
-        <span class="card__label">결과 · 주파수별 신호등</span>
+        <span class="card__label" id="lblHearResTitle">결과 · 주파수별 신호등</span>
         <div id="hearResult"></div>
-        <div class="disclaimer" style="margin-top:10px;">
+        <div class="disclaimer" style="margin-top:10px;" id="hearDisclaimer">
           ⚠️ 스마트폰 스피커와 주변 소음의 영향을 받는 <b>자가 인지용 스크리닝</b>이며 의학적 청력검사가 아닙니다.
           소음 부서 근로자는 <b>연 1회 특수건강진단(청력검사)이 법적 의무</b>입니다 — 회사에 요청하세요. 귀마개는 오늘부터!
         </div>
@@ -463,12 +489,12 @@
       <!-- 목: 카메라 정량측정은 각도·가림 영향으로 신뢰도 확보가 어려워
            설문 + 스트레칭 알림 방식으로 설계 (멘토 피드백 반영) -->
       <div class="card">
-        <span class="card__label">목 부담 설문 · 1분 자가체크</span>
+        <span class="card__label" id="lblNeckTitle">목 부담 설문 · 1분 자가체크</span>
         <div id="neckQs"></div>
         <button class="btn btn--ghost" id="btnNeckResult">결과 보기</button>
         <div id="neckResult" style="margin-top:12px;"></div>
         <div class="toggle-row">
-          <span>🔔 2시간마다 목 스트레칭 알림</span>
+          <span id="neckAlarmLabel">🔔 2시간마다 목 스트레칭 알림</span>
           <button class="switch" id="neckAlarm" aria-label="스트레칭 알림"></button>
         </div>
         <button class="btn btn--ghost" id="btnStretchPreview" style="margin-top:8px;">▶ 스트레칭 안내 미리 듣기</button>
@@ -486,13 +512,18 @@
         <div id="pmplBody" style="font-size:16px; line-height:1.6;"><div class="sub">체크 기록이 쌓이면 나만의 기준선과 비교해 드립니다 (최소 3회).</div></div>
       </div>
       <div class="card">
-        <span class="card__label">산재보험 안내</span>
+        <span class="card__label" id="lblTrend">변화 추이 · 누적 기록 그래프</span>
+        <div id="trendBody"><div class="sub">체크를 2회 이상 하면 항목별 변화 그래프가 표시됩니다.</div></div>
+      </div>
+      <div class="card">
+        <span class="card__label" id="lblSanjaeTitle">산재보험 안내</span>
         <div class="sub" style="font-size:15px;" id="sanjaeInfo">
           손목·어깨 통증이 작업 때문이라면 산재보험으로 치료받을 수 있습니다.
           이 앱의 체크 기록과 통증 일지는 상담 시 참고자료가 됩니다.
           근로자건강센터 1577-6497 (무료 · 통역 지원)
         </div>
       </div>
+      <button class="btn btn--ghost" id="btnLogout" style="margin-bottom:6px;">🚪 로그아웃</button>
     </section>
 
   </main>
@@ -523,6 +554,18 @@ const TTS_LANG = { ko: "ko-KR", dg: "ko-KR", vi: "vi-VN", en: "en-US" };
 const STT_LANG = { ko: "ko-KR", dg: "ko-KR", vi: "vi-VN", en: "en-US" };
 // 로그인/온보딩에서 채워지는 사용자 프로필 (데모: 메모리 저장)
 let profile = { name: "반장", role: "반장", site: "성서 3공단", job: "그라인더·연삭", via: "guest" };
+
+// ── 사용자별 기록 저장소 (기기 내 영구 보관) ──
+// 체크 기록·통증 일지를 localStorage에 계정별로 저장 → 앱 재실행/재로그인해도 유지.
+window.Store = {
+  key: null,
+  setUser(id){ this.key = "sonjikimi_data_v1_" + String(id || "guest").toLowerCase(); },
+  load(){ if(!this.key) return {}; try{ return JSON.parse(localStorage.getItem(this.key)) || {}; }catch(e){ return {}; } },
+  save(patch){
+    if(!this.key) return;
+    try{ localStorage.setItem(this.key, JSON.stringify(Object.assign(this.load(), patch))); }catch(e){}
+  },
+};
 // 호칭: 이름 + 직책(있으면 "님" 붙임). 예) "김철수 반장님", 직책 없으면 "김철수님"
 function callName(){
   return profile.role ? `${profile.name} ${profile.role}님` : `${profile.name}님`;
@@ -543,7 +586,7 @@ const I18N = {
   },
   todayNotYet: { ko:()=>"아직 체크 전이에요", dg:()=>"아직 체크 안 했네예", vi:()=>"Chưa kiểm tra hôm nay", en:()=>"Not checked yet today" },
   todayDone:   { ko:()=>"오늘 체크 완료!", dg:()=>"오늘 체크 다 했심더!", vi:()=>"Đã kiểm tra hôm nay!", en:()=>"Checked today!" },
-  goCheck:     { ko:()=>"지금 손 체크 하기", dg:()=>"지금 손 체크 하기", vi:()=>"Kiểm tra bàn tay ngay", en:()=>"Check my hands now" },
+  goCheck:     { ko:()=>"지금 몸 체크 하기", dg:()=>"지금 몸 체크 하기", vi:()=>"Kiểm tra ngay", en:()=>"Check now" },
   // ── 손 체크 루틴 안내 (화면+음성) ──
   guideCalib: {
     ko:()=>"손바닥을 쫙 펴서 카메라에 보여주세요",
@@ -619,6 +662,82 @@ function speak(text){
 }
 function say(key, ...a){ speak(t(key, ...a)); }
 
+// ═══ 전 화면 UI 번역 사전 ═══
+// 언어 칩 전환 시 모든 화면의 고정 문구가 함께 바뀝니다.
+// dg(사투리)가 없는 항목은 ko로 표시(라벨류는 사투리 차이가 없어 어휘 동일).
+const L = (o)=> (o && (o[lang] ?? o.ko)) ?? "";
+const UI = {
+  // 하단 탭
+  tabHome:   { ko:"홈", vi:"Trang chủ", en:"Home" },
+  tabCheck:  { ko:"AI 체크", vi:"Kiểm tra AI", en:"AI Check" },
+  tabHear:   { ko:"청력", vi:"Thính lực", en:"Hearing" },
+  tabDiary:  { ko:"통증 일지", vi:"Nhật ký đau", en:"Pain Diary" },
+  tabPattern:{ ko:"내 패턴", vi:"Xu hướng", en:"My Pattern" },
+  // 홈
+  lblTodayCheck: { ko:"오늘의 몸 체크", vi:"Kiểm tra cơ thể hôm nay", en:"Today's Body Check" },
+  todayStatusSub:{ ko:"🖐️ 손목과 💪 어깨, 두 가지를 체크해야 해요", dg:"🖐️ 손목하고 💪 어깨, 두 개 다 체크해야 됩니더",
+    vi:"🖐️ Cổ tay và 💪 vai — cần kiểm tra cả hai", en:"🖐️ Check both your wrist and 💪 shoulder" },
+  lblHeat:   { ko:"폭염 모드 · 개정 산안법 기준", vi:"Chế độ nắng nóng · Theo luật ATLĐ", en:"Heat Mode · Safety Act 2025" },
+  lblFeelTemp:{ ko:"체감온도", vi:"Nhiệt độ cảm nhận", en:"Feels-like temp" },
+  btnHeatGeo:{ ko:"📡 내 위치 체감온도 자동으로 맞추기", vi:"📡 Tự động theo vị trí của tôi", en:"📡 Auto-set from my location" },
+  btnHeatSpeak:{ ko:"🔊 음성으로 안내 듣기", vi:"🔊 Nghe hướng dẫn bằng giọng nói", en:"🔊 Hear voice guidance" },
+  disclaimerText:{
+    ko:"⚠️ 본 앱은 의료기기가 아니며 질병을 진단하지 않습니다. 손 상태의 <b>변화</b>를 알려드릴 뿐이며, 통증이 계속되면 근로자건강센터(1577-6497) 또는 병원과 상담하세요. 산재보험은 여러분의 권리입니다.",
+    vi:"⚠️ Ứng dụng này không phải thiết bị y tế và không chẩn đoán bệnh. Chỉ thông báo <b>thay đổi</b> của tay bạn. Nếu đau kéo dài, hãy liên hệ Trung tâm Sức khỏe NLĐ (1577-6497, có phiên dịch). Bảo hiểm TNLĐ là quyền của bạn.",
+    en:"⚠️ This app is not a medical device and does not diagnose. It only shows <b>changes</b> in your hand condition. If pain persists, contact the Workers' Health Center (1577-6497) or a clinic. Industrial accident insurance is your right." },
+  // AI 체크
+  modeHand:    { ko:"🖐️ 손목", vi:"🖐️ Cổ tay", en:"🖐️ Wrist" },
+  modeShoulder:{ ko:"💪 어깨", vi:"💪 Vai", en:"💪 Shoulder" },
+  rstep1:{ ko:"① 손 등록", vi:"① Đăng ký tay", en:"① Register" },
+  rstep2:{ ko:"② 주먹 5회", vi:"② Nắm tay 5 lần", en:"② Fist ×5" },
+  rstep3:{ ko:"③ 쫙 벌리기", vi:"③ Xòe ngón tay", en:"③ Spread" },
+  rstep4:{ ko:"④ 3초 버티기", vi:"④ Giữ 3 giây", en:"④ Hold 3s" },
+  btnStartCheck:{ ko:"▶ 체크 시작", vi:"▶ Bắt đầu", en:"▶ Start Check" },
+  btnStopCheck: { ko:"중지", vi:"Dừng", en:"Stop" },
+  // 청력
+  lblHearTitle:{ ko:"소음성 난청 자가체크 · 그라인더/프레스 작업자", vi:"Tự kiểm tra điếc do tiếng ồn · Thợ mài/dập", en:"Noise-induced Hearing Self-check" },
+  hearIntro:{
+    ko:"소음성 난청은 <b>고음(4,000Hz 부근)부터 조용히</b> 시작됩니다. 본인은 눈치채기 어렵습니다.<br>📢 조용한 곳에서, <b>이어폰 착용</b>, 미디어 볼륨 50%로 맞추고 시작하세요.",
+    dg:"소음성 난청은 <b>고음(4,000Hz 언저리)부터 소리소문 없이</b> 시작됩니더. 본인은 눈치채기 어렵어예.<br>📢 조용한 데서, <b>이어폰 끼고</b>, 볼륨 50%로 맞차놓고 시작하이소.",
+    vi:"Điếc do tiếng ồn bắt đầu <b>âm cao (~4.000Hz) một cách âm thầm</b>, khó tự nhận ra.<br>📢 Hãy làm ở nơi yên tĩnh, <b>đeo tai nghe</b>, âm lượng 50%.",
+    en:"Noise-induced hearing loss starts <b>silently at high pitch (~4,000Hz)</b> — hard to notice yourself.<br>📢 Test in a quiet place, <b>wear earphones</b>, media volume at 50%." },
+  btnHearStart:{ ko:"▶ 자가체크 시작 (약 2분)", vi:"▶ Bắt đầu (khoảng 2 phút)", en:"▶ Start Self-check (~2 min)" },
+  lblToneTitle:{ ko:"1단계 · 주파수별 소리 듣기", vi:"Bước 1 · Nghe âm theo tần số", en:"Step 1 · Tone Test by Frequency" },
+  btnTonePlay:{ ko:"🔊 소리 재생", vi:"🔊 Phát âm thanh", en:"🔊 Play tone" },
+  btnToneYes:{ ko:"들려요", vi:"Nghe được", en:"I hear it" },
+  btnToneNo: { ko:"안 들려요", vi:"Không nghe", en:"Can't hear" },
+  lblWordTitle:{ ko:"2단계 · 말소리 구분 (고음 자음 ㅅ·ㅈ·ㅊ)", vi:"Bước 2 · Phân biệt từ tiếng Hàn (phụ âm cao)", en:"Step 2 · Korean Word Discrimination (high consonants)" },
+  btnWordPlay:{ ko:"🔊 단어 듣기 (다시 듣기 가능)", vi:"🔊 Nghe từ (có thể nghe lại)", en:"🔊 Play word (repeatable)" },
+  lblHearResTitle:{ ko:"결과 · 주파수별 신호등", vi:"Kết quả · Đèn tín hiệu theo tần số", en:"Result · Traffic Light by Frequency" },
+  hearDisclaimer:{
+    ko:"⚠️ 스마트폰 스피커와 주변 소음의 영향을 받는 <b>자가 인지용 스크리닝</b>이며 의학적 청력검사가 아닙니다. 소음 부서 근로자는 <b>연 1회 특수건강진단(청력검사)이 법적 의무</b>입니다 — 회사에 요청하세요. 귀마개는 오늘부터!",
+    vi:"⚠️ Đây là <b>sàng lọc tự nhận biết</b>, bị ảnh hưởng bởi loa và tiếng ồn xung quanh — không phải khám thính lực y tế. NLĐ nơi ồn ào có <b>quyền khám sức khỏe đặc biệt (đo thính lực) mỗi năm 1 lần theo luật</b> — hãy yêu cầu công ty. Đeo nút tai từ hôm nay!",
+    en:"⚠️ This is a <b>self-awareness screening</b> affected by phone speakers and background noise — not a medical hearing test. Workers in noisy areas are <b>legally entitled to an annual special health exam (audiometry)</b> — ask your company. Wear earplugs starting today!" },
+  // 통증 일지
+  lblVoiceDiary:{ ko:"음성 통증 일지", vi:"Nhật ký đau bằng giọng nói", en:"Voice Pain Diary" },
+  micHint:{ ko:'버튼을 누르고 말하세요<br>예: "오른쪽 손목이 어제보다 덜 아픕니다"', dg:'버튼 누지르고 말하이소<br>예: "오른쪽 손목이 어제보다 덜 아픕니더"',
+    vi:'Nhấn nút rồi nói<br>Ví dụ: "Cổ tay phải đỡ đau hơn hôm qua"', en:'Press the button and speak<br>e.g. "My right wrist hurts less than yesterday"' },
+  lblQuickLog:{ ko:"말하기 어려우면 눌러서 기록", vi:"Khó nói? Nhấn nút để ghi", en:"Hard to speak? Tap to log" },
+  btnQuickSave:{ ko:"기록 저장", vi:"Lưu ghi chép", en:"Save entry" },
+  lblDiaryList:{ ko:"기록 (통증 추이)", vi:"Ghi chép (xu hướng đau)", en:"Entries (pain trend)" },
+  lblNeckTitle:{ ko:"목 부담 설문 · 1분 자가체크", vi:"Khảo sát mỏi cổ · 1 phút", en:"Neck Strain Survey · 1 min" },
+  btnNeckResult:{ ko:"결과 보기", vi:"Xem kết quả", en:"See result" },
+  neckAlarmLabel:{ ko:"🔔 2시간마다 목 스트레칭 알림", vi:"🔔 Nhắc giãn cơ cổ mỗi 2 giờ", en:"🔔 Neck stretch reminder every 2h" },
+  btnStretchPreview:{ ko:"▶ 스트레칭 안내 미리 듣기", vi:"▶ Nghe thử hướng dẫn giãn cơ", en:"▶ Preview stretch guidance" },
+  // 내 패턴
+  lblLight:{ ko:"신호등 리포트 · 이번 체크", vi:"Báo cáo đèn tín hiệu · Lần này", en:"Traffic Light Report · This check" },
+  lblPmpl:{ ko:"내 기준선 대비 변화 (PMPL)", vi:"Thay đổi so với mức chuẩn của tôi (PMPL)", en:"Change vs My Baseline (PMPL)" },
+  lblTrend:{ ko:"변화 추이 · 누적 기록 그래프", vi:"Xu hướng thay đổi · Biểu đồ tích lũy", en:"Trend · Cumulative Graph" },
+  lblSanjaeTitle:{ ko:"산재보험 안내", vi:"Bảo hiểm tai nạn lao động", en:"Industrial Accident Insurance" },
+  sanjaeInfo:{
+    ko:"손목·어깨 통증이 작업 때문이라면 산재보험으로 치료받을 수 있습니다. 이 앱의 체크 기록과 통증 일지는 상담 시 참고자료가 됩니다. 근로자건강센터 1577-6497 (무료 · 통역 지원)",
+    vi:"Nếu đau cổ tay/vai do công việc, bạn có thể được điều trị bằng bảo hiểm TNLĐ. Ghi chép trong ứng dụng này là tài liệu tham khảo khi tư vấn. Trung tâm Sức khỏe NLĐ 1577-6497 (miễn phí · có phiên dịch)",
+    en:"If your wrist/shoulder pain is work-related, treatment may be covered by industrial accident insurance. Your records in this app can support a consultation. Workers' Health Center 1577-6497 (free · interpretation available)" },
+  btnLogout:{ ko:"🚪 로그아웃", vi:"🚪 Đăng xuất", en:"🚪 Log out" },
+  camStatus:{ ko:"시작 버튼을 눌러주세요", dg:"시작 버튼 눌러주이소", vi:"Hãy nhấn nút bắt đầu", en:"Press the start button" },
+  guideLine:{ ko:"준비되면 아래 버튼을 누르세요", dg:"준비되면 아래 버튼 누지르이소", vi:"Sẵn sàng thì nhấn nút bên dưới", en:"Press the button below when ready" },
+};
+
 // 언어 전환: 화면 라벨 갱신 (기록 데이터는 그대로)
 function applyLang(){
   $("#homeGreet").textContent = t("homeGreet", callName());
@@ -626,8 +745,19 @@ function applyLang(){
   const siteEl = $("#homeSite");
   if(siteEl) siteEl.textContent = profile.site ? `📍 ${profile.site} · ${profile.job}` : "";
   $("#btnGoCheck").textContent = t("goCheck");
+  // 전 화면 고정 문구 일괄 갱신
+  for(const [id, tr] of Object.entries(UI)){
+    const el = document.getElementById(id);
+    if(el) el.innerHTML = L(tr);
+  }
   renderToday();
   renderHeat();
+  // 동적 생성 UI 다시 그리기 (선택 상태 유지)
+  if(window.buildQuick) buildQuick();
+  if(window.buildNeck) buildNeck();
+  if(window.renderDiary) renderDiary();
+  if(window.__applyLangHear) window.__applyLangHear();
+  if(window.__applyLangModule) window.__applyLangModule();
 }
 $("#langChips").addEventListener("click", (e)=>{
   const b = e.target.closest(".lang-chip"); if(!b) return;
@@ -672,6 +802,47 @@ function renderHeat(){
 $("#heatSlider").oninput = renderHeat;
 $("#btnHeatSpeak").onclick = ()=> say(heatRule(parseFloat($("#heatSlider").value)).key);
 
+
+// ── 내 위치 체감온도 동기화 ──
+// 폰의 GPS 위치 → Open-Meteo(무료·키 불필요) 체감온도(apparent_temperature) 조회.
+// 폰 날씨앱과 같은 "체감온도" 개념(기온+습도+바람 반영). 실서비스: 기상청 API 대체 가능.
+const GEO_T = {
+  noGeo:{ ko:"이 기기는 위치 기능을 지원하지 않아요. 슬라이더로 직접 맞춰 주세요.", vi:"Thiết bị không hỗ trợ định vị. Hãy chỉnh bằng thanh trượt.", en:"This device doesn't support location. Please use the slider." },
+  locating:{ ko:"📍 내 위치 확인 중...", vi:"📍 Đang xác định vị trí...", en:"📍 Finding your location..." },
+  loading:{ ko:"🌡️ 체감온도 불러오는 중...", vi:"🌡️ Đang tải nhiệt độ cảm nhận...", en:"🌡️ Loading feels-like temperature..." },
+  applied:{ ko:"✅ 현재 위치 체감온도 {f}℃ 적용됨 (기온 {t}℃ · {h} 기준)", vi:"✅ Đã áp dụng nhiệt độ cảm nhận {f}℃ (nhiệt độ {t}℃ · lúc {h})", en:"✅ Applied feels-like {f}℃ (air temp {t}℃ · as of {h})" },
+  belowMin:{ ko:" — 게이지는 25℃부터 표시돼요.", vi:" — Thang đo hiển thị từ 25℃.", en:" — gauge starts at 25℃." },
+  aboveMax:{ ko:" — 게이지 최대 40℃로 표시돼요.", vi:" — Thang đo tối đa 40℃.", en:" — gauge caps at 40℃." },
+  fetchFail:{ ko:"체감온도를 불러오지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.", vi:"Không tải được nhiệt độ. Kiểm tra internet rồi thử lại.", en:"Couldn't load the temperature. Check your internet and try again." },
+  denied:{ ko:"위치 권한이 꺼져 있어요. 앱 설정에서 위치를 허용하면 자동으로 맞출 수 있어요.", vi:"Quyền vị trí đang tắt. Bật quyền vị trí trong cài đặt để tự động điều chỉnh.", en:"Location permission is off. Allow location in app settings to auto-set." },
+  posFail:{ ko:"위치를 확인하지 못했어요. 슬라이더로 직접 맞춰 주세요.", vi:"Không xác định được vị trí. Hãy chỉnh bằng thanh trượt.", en:"Couldn't get your location. Please use the slider." },
+};
+$("#btnHeatGeo").onclick = ()=>{
+  const note = $("#heatGeoNote");
+  if(!navigator.geolocation){ note.textContent = L(GEO_T.noGeo); return; }
+  note.textContent = L(GEO_T.locating);
+  navigator.geolocation.getCurrentPosition(async (pos)=>{
+    try{
+      note.textContent = L(GEO_T.loading);
+      const { latitude:la, longitude:lo } = pos.coords;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${la.toFixed(3)}&longitude=${lo.toFixed(3)}&current=apparent_temperature,temperature_2m&timezone=auto`;
+      const res = await fetch(url);
+      const j = await res.json();
+      const feel = j?.current?.apparent_temperature;
+      if(typeof feel !== "number") throw new Error("no data");
+      const clamped = Math.min(40, Math.max(25, feel));
+      $("#heatSlider").value = clamped;
+      renderHeat();
+      const hhmm = new Date().toTimeString().slice(0,5);
+      note.textContent = L(GEO_T.applied).replace("{f}", feel.toFixed(1)).replace("{t}", j.current.temperature_2m).replace("{h}", hhmm)
+        + (feel < 25 ? L(GEO_T.belowMin) : feel > 40 ? L(GEO_T.aboveMax) : "");
+      say(heatRule(clamped).key);
+    }catch(e){ note.textContent = L(GEO_T.fetchFail); }
+  }, (err)=>{
+    note.textContent = err.code === 1 ? L(GEO_T.denied) : L(GEO_T.posFail);
+  }, { enableHighAccuracy:false, timeout:10000, maximumAge:10*60*1000 });
+};
+
 // ═══ 음성 통증 일지 ═══
 // 자유발화 → {부위, 좌우, 강도} 구조화 (데모: 키워드 규칙 / 실서비스: 서버 NLU 권장)
 const PARTS = [
@@ -687,10 +858,19 @@ const PARTS = [
 const SEV_RULES = [
   {sev:3, kw:["너무 아프","너무 아파","너무 아픕","많이 아프","많이 아파","많이 아픕","심하","심해","죽겠","rất đau","very pain","severe"]},
   {sev:0, kw:["덜 아프","덜 아파","덜 아픕","덜아프","안 아프","안 아파","괜찮","좋아졌","좋아요","나아졌","나았","đỡ đau","better","less pain"]},
-  {sev:1, kw:["조금","약간","살짝","hơi","slightly","a little"]},
+  {sev:1, kw:["뻐근","뻑적지근","조금","약간","살짝","hơi","slightly","a little"]},
   {sev:2, kw:["아프","아파","아픕","아퍼","쑤시","쑤셔","저리","저려","결리","결려","욱신","đau","pain","hurt","sore","numb"]},
 ];
-const SEV_LABEL = {0:"호전됨", 1:"약간 불편", 2:"아픔", 3:"심하게 아픔"};
+const SEV_I18N = {
+  0:{ long:{ko:"호전됨", vi:"Đỡ hơn", en:"Improved"},  short:{ko:"호전", vi:"Đỡ", en:"Better"} },
+  1:{ long:{ko:"뻐근함", vi:"Mỏi/cứng", en:"Stiff"},   short:{ko:"뻐근", vi:"Mỏi", en:"Stiff"} },
+  2:{ long:{ko:"아픔", vi:"Đau", en:"Painful"},        short:{ko:"아픔", vi:"Đau", en:"Pain"} },
+  3:{ long:{ko:"심하게 아픔", vi:"Rất đau", en:"Severe pain"}, short:{ko:"심함", vi:"Rất đau", en:"Severe"} },
+};
+const sevLabel = (s)=> L(SEV_I18N[s].long);
+const sevShort = (s)=> L(SEV_I18N[s].short);
+const SIDE_I18N = { "왼쪽":{ko:"왼쪽", vi:"Trái", en:"Left"}, "오른쪽":{ko:"오른쪽", vi:"Phải", en:"Right"} };
+const partLabel = (koName)=>{ const p = PARTS.find(x=>x.ko===koName); return p ? (p[lang]||p.ko) : koName; };
 let diary = []; // {at, part, side, sev, raw}  (데모: 인메모리 / 실서비스: 로컬DB+백엔드)
 
 function parseUtterance(text){
@@ -704,25 +884,38 @@ function parseUtterance(text){
   if(part===null && sev===null) return null;
   return { at: Date.now(), part: part||"전신/기타", side, sev: sev===null?2:sev, raw:text };
 }
+const DIARY_T = {
+  empty:{ ko:"아직 기록이 없어요.", dg:"아직 기록이 없네예.", vi:"Chưa có ghi chép nào.", en:"No entries yet." },
+  better:{ ko:" · 지난 기록보다 좋아졌어요 📈", dg:" · 지난 기록보다 좋아졌네예 📈", vi:" · Tốt hơn lần trước 📈", en:" · Better than last entry 📈" },
+  worse:{ ko:" · 지난 기록보다 나빠졌어요. 계속되면 상담을 권해요", dg:" · 지난 기록보다 나빠졌어예. 계속되믄 상담 받아보이소", vi:" · Xấu hơn lần trước. Nếu kéo dài, nên đi tư vấn", en:" · Worse than last entry. If it continues, consider a consultation" },
+  same:{ ko:" · 지난 기록과 비슷해요", vi:" · Tương tự lần trước", en:" · Similar to last entry" },
+  quickTag:{ ko:"버튼 기록", vi:"Ghi bằng nút", en:"Button entry" },
+  needBoth:{ ko:"부위와 정도를 선택해 주세요.", vi:"Hãy chọn vị trí và mức độ.", en:"Please select a body part and severity." },
+  etcPart:{ ko:"전신/기타", vi:"Toàn thân/khác", en:"Body/other" },
+};
 function trendNote(entry){
   // 같은 부위의 직전 기록과 비교 → 추이 코멘트 (분석은 상관 추이까지만, 진단 아님)
   const prev = [...diary].reverse().find(d=>d!==entry && d.part===entry.part && d.side===entry.side);
   if(!prev) return "";
-  if(entry.sev < prev.sev) return " · 지난 기록보다 좋아졌어요 📈";
-  if(entry.sev > prev.sev) return " · 지난 기록보다 나빠졌어요. 계속되면 상담을 권해요";
-  return " · 지난 기록과 비슷해요";
+  if(entry.sev < prev.sev) return L(DIARY_T.better);
+  if(entry.sev > prev.sev) return L(DIARY_T.worse);
+  return L(DIARY_T.same);
 }
 function renderDiary(){
   const el = $("#diaryList");
-  if(!diary.length){ el.innerHTML = '<div class="sub">아직 기록이 없어요.</div>'; return; }
+  if(!diary.length){ el.innerHTML = `<div class="sub">${L(DIARY_T.empty)}</div>`; return; }
   el.innerHTML = [...diary].reverse().map(d=>{
     const dt = new Date(d.at);
     const when = `${dt.getMonth()+1}/${dt.getDate()} ${String(dt.getHours()).padStart(2,"0")}:${String(dt.getMinutes()).padStart(2,"0")}`;
-    return `<div class="diary-entry"><span class="sev sev-${d.sev}"></span><b>${d.side} ${d.part}</b> — ${SEV_LABEL[d.sev]}${trendNote(d)}<br><span style="color:var(--steel); font-size:14px;">${when} · "${d.raw}"</span></div>`;
+    const side = d.side ? (L(SIDE_I18N[d.side]) || d.side) + " " : "";
+    const part = d.part === "전신/기타" ? L(DIARY_T.etcPart) : partLabel(d.part);
+    const raw = d.raw === "버튼 기록" ? L(DIARY_T.quickTag) : d.raw;
+    return `<div class="diary-entry"><span class="sev sev-${d.sev}"></span><b>${side}${part}</b> — ${sevLabel(d.sev)}${trendNote(d)}<br><span style="color:var(--steel); font-size:14px;">${when} · "${raw}"</span></div>`;
   }).join("");
 }
 function addDiary(entry){
   diary.push(entry); renderDiary(); say("micSaved");
+  window.Store.save({ diary }); // 기기 내 영구 저장
 }
 
 // Web Speech API (크롬 계열). 미지원/실패 시 빠른 버튼 기록으로 폴백
@@ -738,26 +931,37 @@ $("#btnMic").onclick = ()=>{
   recog.onresult = (ev)=>{
     const text = ev.results[0][0].transcript;
     const entry = parseUtterance(text);
-    if(entry){ $("#micResult").textContent = `"${text}" → ${entry.side} ${entry.part} · ${SEV_LABEL[entry.sev]}`; addDiary(entry); }
-    else { $("#micResult").textContent = `"${text}" — 부위/증상을 못 알아들었어요. 다시 시도하거나 버튼으로 기록하세요.`; }
+    if(entry){
+      const side = entry.side ? (L(SIDE_I18N[entry.side]) || entry.side) + " " : "";
+      $("#micResult").textContent = `"${text}" → ${side}${partLabel(entry.part)} · ${sevLabel(entry.sev)}`;
+      addDiary(entry);
+    }
+    else { $("#micResult").textContent = `"${text}" — ` + L({
+      ko:"부위/증상을 못 알아들었어요. 다시 시도하거나 버튼으로 기록하세요.",
+      dg:"부위/증상을 못 알아들었어예. 다시 하거나 버튼으로 하이소.",
+      vi:"Không nhận ra vị trí/triệu chứng. Thử lại hoặc dùng nút.",
+      en:"Couldn't recognize the body part/symptom. Try again or use the buttons."}); }
   };
   recog.onerror = ()=>{ $("#micResult").textContent = t("micNoSupport"); };
   recog.onend = ()=>{ recording=false; $("#btnMic").classList.remove("rec"); };
   recog.start();
 };
 
-// 빠른 버튼 기록 (음성 폴백 · 접근성)
-let qPart = null, qSev = null;
+// 빠른 버튼 기록 (음성 폴백 · 접근성) — 언어 전환 시 다시 그려도 선택 유지
+let qPartIdx = null, qSev = null;
 function buildQuick(){
-  $("#quickParts").innerHTML = PARTS.map((p,i)=>`<button data-i="${i}">${p.ko}</button>`).join("");
-  $("#quickSev").innerHTML = [0,1,2,3].map(s=>`<button data-s="${s}"><span class="sev sev-${s}"></span>${SEV_LABEL[s].slice(0,2)}</button>`).join("");
+  $("#quickParts").innerHTML = PARTS.map((p,i)=>
+    `<button data-i="${i}" class="${qPartIdx===i?'sel':''}">${p[lang]||p.ko}</button>`).join("");
+  $("#quickSev").innerHTML = [0,1,2,3].map(s=>
+    `<button data-s="${s}" class="${qSev===s?'sel':''}"><span class="sev sev-${s}"></span>${sevShort(s)}</button>`).join("");
   $("#quickParts").onclick = (e)=>{ const b=e.target.closest("button"); if(!b) return;
-    $$("#quickParts button").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); qPart = PARTS[+b.dataset.i].ko; };
+    $$("#quickParts button").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); qPartIdx = +b.dataset.i; };
   $("#quickSev").onclick = (e)=>{ const b=e.target.closest("button"); if(!b) return;
     $$("#quickSev button").forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); qSev = +b.dataset.s; };
   $("#btnQuickSave").onclick = ()=>{
-    if(qPart===null || qSev===null){ alert("부위와 정도를 선택해 주세요."); return; }
-    addDiary({ at:Date.now(), part:qPart, side:"", sev:qSev, raw:"버튼 기록" });
+    if(qPartIdx===null || qSev===null){ alert(L(DIARY_T.needBoth)); return; }
+    // 저장은 한국어 표준명으로 (언어를 바꿔도 같은 부위끼리 추이가 비교되도록)
+    addDiary({ at:Date.now(), part:PARTS[qPartIdx].ko, side:"", sev:qSev, raw:"버튼 기록" });
   };
 }
 
@@ -837,7 +1041,20 @@ async function api(path, body){
   }
   return { ok:false, error:"알 수 없는 요청이에요." };
 }
+const SESSION_KEY = "sonjikimi_session_v1"; // 자동 로그인용 세션
+
 function enterApp(){
+  // 이 계정의 저장된 기록 복원 (통증 일지 + 손목/어깨 체크 기록)
+  window.Store.setUser(profile.id);
+  const saved = window.Store.load();
+  diary = Array.isArray(saved.diary) ? saved.diary : [];
+  renderDiary();
+  if(window.__restoreHistories) window.__restoreHistories();
+  // 자동 로그인 세션 저장 (게스트 제외)
+  try{
+    if(profile.id && profile.via !== "guest") localStorage.setItem(SESSION_KEY, String(profile.id).toLowerCase());
+  }catch(e){}
+
   applyLang();
   const JOB_TIP = {
     "그라인더·연삭": "그라인더 작업은 손 떨림(진동증후군)과 청력(소음성 난청)을 꼭 챙기세요.",
@@ -858,7 +1075,7 @@ function enterApp(){
 $("#btnGoSignup").onclick = ()=>{ signup = { site:null, job:null, name:null, role:"반장" }; showAuth("auth-site"); };
 $("#btnGoLogin").onclick = ()=>{ $("#loginErr").textContent = ""; showAuth("auth-login"); };
 $("#btnGuest").onclick = ()=>{
-  profile = { name:"손님", role:"", site:"", job:"", via:"guest" };
+  profile = { id:"guest", name:"손님", role:"", site:"", job:"", via:"guest" };
   enterApp();
 };
 
@@ -871,22 +1088,35 @@ $("#btnLoginDo").onclick = async ()=>{
   try{
     const r = await api("/api/login", { id, pw });
     if(!r.ok){ $("#loginErr").textContent = r.error || "로그인에 실패했어요."; return; }
-    profile = { name:r.name, role:r.role, site:r.site, job:r.job, via:"login" };
+    profile = { id:id.toLowerCase(), name:r.name, role:r.role, site:r.site, job:r.job, via:"login" };
     enterApp();
   }catch(e){ console.error(e); $("#loginErr").textContent = "로그인 처리 중 문제가 생겼어요. 다시 시도해 주세요."; }
   finally{ $("#btnLoginDo").disabled = false; }
 };
 
 // ── 회원가입 ① 작업장 ──
+// "기타 작업장" 선택 시: 넘어가지 않고 무슨 일을 하는지 직접 입력해야 다음으로 진행
+function siteNextGate(){
+  const isEtc = signup.site === "기타 작업장";
+  $("#customJobWrap").classList.toggle("hidden", !isEtc);
+  $("#btnSiteNext").disabled = !signup.site || (isEtc && !$("#customJob").value.trim());
+}
 $("#siteGrid").onclick = (e)=>{
   const b = e.target.closest("button"); if(!b) return;
   $("#siteGrid").querySelectorAll("button").forEach(x=>x.classList.remove("sel"));
   b.classList.add("sel");
   signup.site = b.dataset.site; signup.job = b.dataset.job;
-  $("#btnSiteNext").disabled = false;
+  siteNextGate();
+  if(signup.site === "기타 작업장") $("#customJob").focus();
 };
+$("#customJob").addEventListener("input", siteNextGate);
 $("#btnSiteNext").onclick = ()=>{
   if(!signup.site) return;
+  if(signup.site === "기타 작업장"){
+    const j = $("#customJob").value.trim();
+    if(!j) return; // 입력 없으면 진행 불가
+    signup.job = j;
+  }
   $("#nameSiteEcho").textContent = `${signup.site} · ${signup.job}에서 쓰실 이름이에요 (2/3)`;
   showAuth("auth-name"); $("#onbName").focus();
 };
@@ -923,9 +1153,30 @@ $("#btnSignupDo").onclick = async ()=>{
   try{
     const r = await api("/api/signup", { id, pw, name:signup.name, role:signup.role, site:signup.site, job:signup.job });
     if(!r.ok){ $("#signErr").textContent = r.error || "가입에 실패했어요."; $("#btnSignupDo").disabled = false; return; }
-    profile = { name:signup.name, role:signup.role, site:signup.site, job:signup.job, via:"signup" };
+    profile = { id:id.toLowerCase(), name:signup.name, role:signup.role, site:signup.site, job:signup.job, via:"signup" };
     enterApp();
   }catch(e){ console.error(e); $("#signErr").textContent = "가입 처리 중 문제가 생겼어요. 다시 시도해 주세요."; $("#btnSignupDo").disabled = false; }
+};
+
+// ── 자동 로그인 ──
+// 마지막 로그인 세션이 남아 있으면 시작 화면을 건너뛰고 바로 홈으로.
+// (로그아웃 버튼을 누르기 전까지 유지 · 게스트는 제외)
+window.addEventListener("load", ()=>{
+  try{
+    const sid = localStorage.getItem(SESSION_KEY);
+    if(!sid) return;
+    const acc = loadAccounts()[sid];
+    if(!acc){ localStorage.removeItem(SESSION_KEY); return; }
+    profile = { id:sid, name:acc.name, role:acc.role, site:acc.site, job:acc.job, via:"auto" };
+    enterApp();
+  }catch(e){ console.warn("자동 로그인 실패:", e); }
+});
+
+// ── 로그아웃 ──
+// 세션만 지우고 기록은 계정별로 보관 → 다시 로그인하면 그대로 복원됨.
+$("#btnLogout").onclick = ()=>{
+  try{ localStorage.removeItem(SESSION_KEY); }catch(e){}
+  location.reload();
 };
 </script>
 
@@ -945,19 +1196,42 @@ $("#btnSignupDo").onclick = async ()=>{
 //  ⚠️ 스피커·환경소음 영향을 받는 자가 인지용. 의학적 검사 아님.
 // ═══════════════════════════════════════════════════════════════
 const TONE_FREQS = [
-  { f:500,  name:"저주파 500Hz" },
-  { f:2000, name:"중주파 2,000Hz" },
-  { f:4000, name:"고주파 4,000Hz ★" },
-  { f:6000, name:"고주파 6,000Hz ★" },
+  { f:500,  name:{ko:"저주파 500Hz", vi:"Tần số thấp 500Hz", en:"Low 500Hz"} },
+  { f:2000, name:{ko:"중주파 2,000Hz", vi:"Tần số trung 2.000Hz", en:"Mid 2,000Hz"} },
+  { f:4000, name:{ko:"고주파 4,000Hz ★", vi:"Tần số cao 4.000Hz ★", en:"High 4,000Hz ★"} },
+  { f:6000, name:{ko:"고주파 6,000Hz ★", vi:"Tần số cao 6.000Hz ★", en:"High 6,000Hz ★"} },
 ];
 const TONE_GAINS = [0.02, 0.08, 0.30]; // 아주 작게 → 보통 → 크게
-const GAIN_LABEL = ["아주 작은 소리", "보통 크기 소리", "큰 소리"];
-const WORD_SETS = [
-  { band:"low",  label:"저주파 단어 (모음 위주)", pair:["바다","바보"] },
-  { band:"mid",  label:"중주파 단어",             pair:["사과","사고"] },
-  { band:"high", label:"고주파 단어 (ㅅ 구분) ★", pair:["시계","기계"] },
-  { band:"high", label:"고주파 단어 (ㅅ/ㅎ 구분) ★", pair:["사자","하자"] },
+const GAIN_LABEL = [
+  {ko:"아주 작은 소리", vi:"Âm rất nhỏ", en:"Very quiet"},
+  {ko:"보통 크기 소리", vi:"Âm vừa", en:"Medium"},
+  {ko:"큰 소리", vi:"Âm to", en:"Loud"},
 ];
+// 단어 구분은 한국어 자음 특성 기반 테스트라 단어 자체는 한국어 유지 (안내문만 번역)
+const WORD_SETS = [
+  { band:"low",  label:{ko:"저주파 단어 (모음 위주)", vi:"Từ tần số thấp (nguyên âm)", en:"Low-freq words (vowels)"}, pair:["바다","바보"] },
+  { band:"mid",  label:{ko:"중주파 단어", vi:"Từ tần số trung", en:"Mid-freq words"}, pair:["사과","사고"] },
+  { band:"high", label:{ko:"고주파 단어 (ㅅ 구분) ★", vi:"Từ tần số cao (ㅅ) ★", en:"High-freq words (ㅅ) ★"}, pair:["시계","기계"] },
+  { band:"high", label:{ko:"고주파 단어 (ㅅ/ㅎ 구분) ★", vi:"Từ tần số cao (ㅅ/ㅎ) ★", en:"High-freq words (ㅅ/ㅎ) ★"}, pair:["사자","하자"] },
+];
+const HEAR_T = {
+  answerAfter:{ ko:" — 재생 후 답해주세요", vi:" — Phát xong hãy trả lời", en:" — answer after playing" },
+  pickWord:{ ko:" — 듣고 고르세요", vi:" — Nghe rồi chọn", en:" — listen and choose" },
+  cantHearLoud:{ ko:"큰 소리도 못 들음", vi:"Không nghe cả âm to", en:"Couldn't hear even loud" },
+  heardAt:{ ko:"에서 들림", vi:" - nghe được", en:" - heard" },
+  correct:{ ko:"정답", vi:"đúng", en:"correct" },
+  wLow:{ ko:"저주파 단어 구분", vi:"Phân biệt từ tần số thấp", en:"Low-freq word discrimination" },
+  wMid:{ ko:"중주파 단어 구분", vi:"Phân biệt từ tần số trung", en:"Mid-freq word discrimination" },
+  wHigh:{ ko:"고주파 단어 구분 ★", vi:"Phân biệt từ tần số cao ★", en:"High-freq word discrimination ★" },
+  bad:{ ko:"⚠️ 고주파(4~6kHz) 영역 저하 신호가 있어요. 소음성 난청은 이 대역부터 시작됩니다. 특수건강진단(청력검사)을 꼭 받아보세요.",
+        dg:"⚠️ 고주파(4~6kHz) 쪽이 떨어지는 신호가 있어예. 소음성 난청은 여서부터 시작됩니더. 특수건강진단(청력검사) 꼭 받아보이소.",
+        vi:"⚠️ Có dấu hiệu giảm ở dải tần cao (4~6kHz). Điếc do tiếng ồn bắt đầu từ dải này. Hãy đi khám thính lực (khám sức khỏe đặc biệt).",
+        en:"⚠️ Signs of reduced hearing in the high band (4–6kHz). Noise-induced hearing loss starts here. Please get an audiometry exam." },
+  good:{ ko:"✅ 이번 자가체크에서는 특이 신호가 없었어요. 소음 작업 시 귀마개는 계속 착용하세요!",
+         dg:"✅ 이번에는 별 신호 없었심더. 시끄러운 데서는 귀마개 계속 끼이소!",
+         vi:"✅ Lần này không có dấu hiệu bất thường. Hãy tiếp tục đeo nút tai khi làm việc nơi ồn!",
+         en:"✅ No unusual signs this time. Keep wearing earplugs during noisy work!" },
+};
 
 let audioCtx = null;
 function playTone(freq, gain, ms=1000){
@@ -986,8 +1260,8 @@ function renderProgress(el, total, cur){
 }
 function toneUI(){
   renderProgress($("#toneProgress"), TONE_FREQS.length, hear.toneIdx);
-  $("#toneFreq").textContent = TONE_FREQS[hear.toneIdx].name;
-  $("#toneLevel").textContent = GAIN_LABEL[hear.level] + " — 재생 후 답해주세요";
+  $("#toneFreq").textContent = L(TONE_FREQS[hear.toneIdx].name);
+  $("#toneLevel").textContent = L(GAIN_LABEL[hear.level]) + L(HEAR_T.answerAfter);
 }
 $("#btnHearStart").onclick = ()=>{
   Object.assign(hear, { toneIdx:0, level:0, toneScore:[], wordIdx:0,
@@ -1015,11 +1289,11 @@ function startWordPhase(){
   $("#wordCard").classList.remove("hidden");
   wordUI();
 }
-function wordUI(){
+function wordUI(keepTarget){
   const set = WORD_SETS[hear.wordIdx];
   renderProgress($("#wordProgress"), WORD_SETS.length, hear.wordIdx);
-  $("#wordBandLabel").textContent = set.label + " — 듣고 고르세요";
-  hear.wordTarget = set.pair[Math.random() < 0.5 ? 0 : 1];
+  $("#wordBandLabel").textContent = L(set.label) + L(HEAR_T.pickWord);
+  if(!keepTarget) hear.wordTarget = set.pair[Math.random() < 0.5 ? 0 : 1];
   $("#wordChoices").innerHTML = set.pair.map(w=>`<button class="ab-btn" data-w="${w}">${w}</button>`).join("");
 }
 $("#btnWordPlay").onclick = ()=> speakKo(hear.wordTarget);
@@ -1039,23 +1313,29 @@ function renderHearResult(){
   const dot = (s)=> s<=0 ? "g" : s===1 ? "y" : "r"; // 들은 크기 단계 → 신호등
   const toneRows = TONE_FREQS.map((tf,i)=>{
     const s = hear.toneScore[i];
-    const txt = s>=3 ? "큰 소리도 못 들음" : GAIN_LABEL[s] + "에서 들림";
-    return `<div class="light-row"><span class="light-dot ${dot(s)}"></span><span class="light-name">${tf.name}</span><span class="light-val">${txt}</span></div>`;
+    const txt = s>=3 ? L(HEAR_T.cantHearLoud) : L(GAIN_LABEL[s]) + L(HEAR_T.heardAt);
+    return `<div class="light-row"><span class="light-dot ${dot(s)}"></span><span class="light-name">${L(tf.name)}</span><span class="light-val">${txt}</span></div>`;
   }).join("");
   const w = hear.wordScore;
   const wordRow = (band, name)=>{
     const r = w[band]; if(!r.n) return "";
     const cls = r.ok===r.n ? "g" : "r";
-    return `<div class="light-row"><span class="light-dot ${cls}"></span><span class="light-name">${name}</span><span class="light-val">${r.ok} / ${r.n} 정답</span></div>`;
+    return `<div class="light-row"><span class="light-dot ${cls}"></span><span class="light-name">${name}</span><span class="light-val">${r.ok} / ${r.n} ${L(HEAR_T.correct)}</span></div>`;
   };
   // 고주파(4k/6k) 저하 또는 ㅅ·ㅈ 계열 구분 실패 → 소음성 난청 의심 신호
   const highToneBad = hear.toneScore[2] >= 1 || hear.toneScore[3] >= 1;
   const highWordBad = w.high.n && w.high.ok < w.high.n;
   const verdict = (highToneBad || highWordBad)
-    ? `<p style="font-size:16px; font-weight:700; color:var(--danger); margin-top:10px;">⚠️ 고주파(4~6kHz) 영역 저하 신호가 있어요. 소음성 난청은 이 대역부터 시작됩니다. 특수건강진단(청력검사)을 꼭 받아보세요.</p>`
-    : `<p style="font-size:16px; font-weight:700; color:var(--ok); margin-top:10px;">✅ 이번 자가체크에서는 특이 신호가 없었어요. 소음 작업 시 귀마개는 계속 착용하세요!</p>`;
-  $("#hearResult").innerHTML = toneRows + wordRow("low","저주파 단어 구분") + wordRow("mid","중주파 단어 구분") + wordRow("high","고주파 단어 구분 ★") + verdict;
+    ? `<p style="font-size:16px; font-weight:700; color:var(--danger); margin-top:10px;">${L(HEAR_T.bad)}</p>`
+    : `<p style="font-size:16px; font-weight:700; color:var(--ok); margin-top:10px;">${L(HEAR_T.good)}</p>`;
+  $("#hearResult").innerHTML = toneRows + wordRow("low",L(HEAR_T.wLow)) + wordRow("mid",L(HEAR_T.wMid)) + wordRow("high",L(HEAR_T.wHigh)) + verdict;
 }
+
+// 언어 전환 시 청력 화면의 진행 중 문구 갱신
+window.__applyLangHear = ()=>{
+  if(!$("#toneCard").classList.contains("hidden")) toneUI();
+  if(!$("#wordCard").classList.contains("hidden")) wordUI(true);
+};
 
 // ═══════════════════════════════════════════════════════════════
 //  목 부담 관리 — 카메라 정량측정 대신 설문 + 스트레칭 알림
@@ -1063,22 +1343,43 @@ function renderHearResult(){
 //   측정이 아닌 자가보고 + 행동개입 방식으로 설계)
 // ═══════════════════════════════════════════════════════════════
 const NECK_QS = [
-  { q:"① 고개를 숙이고 하는 작업(조립·검사·포장)이 하루에", opts:[["2시간 미만",0],["2~4시간",1],["4시간 이상",2]] },
-  { q:"② 목 뻐근함이나 통증을 느끼는 빈도", opts:[["거의 없음",0],["주 1~2회",1],["거의 매일",2]] },
-  { q:"③ 팔이나 손가락 저림", opts:[["없음",0],["가끔",1],["자주(밤에도)",2]] },
-  { q:"④ 목·뒤통수에서 시작되는 두통", opts:[["없음",0],["가끔",1],["자주",2]] },
+  { q:{ko:"① 고개를 숙이고 하는 작업(조립·검사·포장)이 하루에", vi:"① Công việc cúi đầu (lắp ráp, kiểm tra, đóng gói) mỗi ngày", en:"① Head-down work (assembly/inspection/packing) per day"},
+    opts:[[{ko:"2시간 미만",vi:"Dưới 2 giờ",en:"< 2h"},0],[{ko:"2~4시간",vi:"2~4 giờ",en:"2–4h"},1],[{ko:"4시간 이상",vi:"Trên 4 giờ",en:"> 4h"},2]] },
+  { q:{ko:"② 목 뻐근함이나 통증을 느끼는 빈도", vi:"② Tần suất mỏi hoặc đau cổ", en:"② How often your neck feels stiff or painful"},
+    opts:[[{ko:"거의 없음",vi:"Hầu như không",en:"Rarely"},0],[{ko:"주 1~2회",vi:"1~2 lần/tuần",en:"1–2×/week"},1],[{ko:"거의 매일",vi:"Gần như mỗi ngày",en:"Almost daily"},2]] },
+  { q:{ko:"③ 팔이나 손가락 저림", vi:"③ Tê tay hoặc ngón tay", en:"③ Numbness in arms or fingers"},
+    opts:[[{ko:"없음",vi:"Không",en:"None"},0],[{ko:"가끔",vi:"Thỉnh thoảng",en:"Sometimes"},1],[{ko:"자주(밤에도)",vi:"Thường xuyên (cả ban đêm)",en:"Often (even at night)"},2]] },
+  { q:{ko:"④ 목·뒤통수에서 시작되는 두통", vi:"④ Đau đầu bắt đầu từ cổ/sau gáy", en:"④ Headaches starting from neck/back of head"},
+    opts:[[{ko:"없음",vi:"Không",en:"None"},0],[{ko:"가끔",vi:"Thỉnh thoảng",en:"Sometimes"},1],[{ko:"자주",vi:"Thường xuyên",en:"Often"},2]] },
 ];
 const STRETCHES = [
-  "1️⃣ 턱 당기기 — 턱을 뒤로 지그시 당겨 5초, 10회 (거북목 교정)",
-  "2️⃣ 옆 목 늘리기 — 손으로 머리를 옆으로 지그시, 좌우 15초씩",
-  "3️⃣ 어깨 으쓱 후 툭 — 어깨를 귀까지 올렸다 힘 빼며 떨구기 10회",
+  {ko:"1️⃣ 턱 당기기 — 턱을 뒤로 지그시 당겨 5초, 10회 (거북목 교정)", vi:"1️⃣ Thu cằm — kéo cằm về sau nhẹ nhàng 5 giây, 10 lần", en:"1️⃣ Chin tuck — gently pull chin back, 5s × 10 (posture fix)"},
+  {ko:"2️⃣ 옆 목 늘리기 — 손으로 머리를 옆으로 지그시, 좌우 15초씩", vi:"2️⃣ Kéo giãn cổ bên — dùng tay nghiêng đầu nhẹ, mỗi bên 15 giây", en:"2️⃣ Side neck stretch — gently tilt head with hand, 15s each side"},
+  {ko:"3️⃣ 어깨 으쓱 후 툭 — 어깨를 귀까지 올렸다 힘 빼며 떨구기 10회", vi:"3️⃣ Nhún vai rồi thả — nâng vai lên tai rồi thả lỏng, 10 lần", en:"3️⃣ Shoulder shrug & drop — raise to ears, relax & drop × 10"},
 ];
+const NECK_T = {
+  answerAll:{ ko:"모든 문항에 답해 주세요.", vi:"Hãy trả lời tất cả câu hỏi.", en:"Please answer all questions." },
+  strain:{ ko:"목 부담", vi:"Mức mỏi cổ", en:"Neck strain" },
+  low:{ ko:"낮음", vi:"Thấp", en:"Low" }, mid:{ ko:"주의", vi:"Chú ý", en:"Caution" }, high:{ ko:"높음", vi:"Cao", en:"High" },
+  lowMsg:{ ko:"지금처럼 관리하세요.", dg:"지금맨키로 관리하이소.", vi:"Hãy duy trì như hiện tại.", en:"Keep it up." },
+  midMsg:{ ko:"작업 중 스트레칭을 습관화하세요. 아래 알림을 켜두면 좋아요.", dg:"일하다가 스트레칭 습관 들이이소. 아래 알림 켜두면 좋아예.", vi:"Hãy tạo thói quen giãn cơ khi làm việc. Nên bật nhắc nhở bên dưới.", en:"Make stretching a habit at work. Turning on the reminder below helps." },
+  highMsg:{ ko:"부담이 큰 상태예요. 작업대 높이 조정과 상담을 권해요.", dg:"부담이 마이 큰 상태라예. 작업대 높이 맞차보고 상담도 받아보이소.", vi:"Mức căng thẳng cao. Nên điều chỉnh độ cao bàn làm việc và đi tư vấn.", en:"High strain. Adjust your workbench height and consider a consultation." },
+  numb:{ ko:"팔·손 저림이 잦다면 목 신경 관련 신호일 수 있어요.", vi:"Tê tay thường xuyên có thể là dấu hiệu liên quan dây thần kinh cổ.", en:"Frequent arm/hand numbness can be a neck-nerve signal." },
+  consult:{ ko:"⚠️ 근로자건강센터(1577-6497) 상담을 권합니다.", dg:"⚠️ 근로자건강센터(1577-6497) 상담 꼭 받아보이소.", vi:"⚠️ Khuyên bạn tư vấn Trung tâm Sức khỏe NLĐ (1577-6497, có phiên dịch).", en:"⚠️ We recommend consulting the Workers' Health Center (1577-6497)." },
+  findHosp:{ ko:"📍 내 주변 정형외과·재활의학과 찾기", vi:"📍 Tìm phòng khám chỉnh hình gần tôi", en:"📍 Find orthopedic clinics near me" },
+  alarmOn:{ ko:"2시간마다 스트레칭 알림을 켰어요.", dg:"2시간마다 스트레칭 알림 켰심더.", vi:"Đã bật nhắc giãn cơ mỗi 2 giờ.", en:"Stretch reminder every 2 hours is on." },
+  script:{ ko:"목 스트레칭 시간입니다. 턱을 지그시 당겨 5초. 머리를 옆으로 지그시 15초. 어깨를 으쓱 올렸다가 툭 떨어뜨리세요.",
+           dg:"목 스트레칭 할 시간입니더. 턱 지그시 당겨서 5초. 머리 옆으로 지그시 15초. 어깨 으쓱 올렸다가 툭 떨가뜨리이소.",
+           vi:"Đến giờ giãn cơ cổ. Thu cằm nhẹ 5 giây. Nghiêng đầu sang bên 15 giây. Nhún vai lên rồi thả lỏng.",
+           en:"Time for a neck stretch. Tuck your chin for 5 seconds. Tilt your head to the side for 15 seconds. Shrug your shoulders up, then drop them." },
+};
 let neckAns = new Array(NECK_QS.length).fill(null);
 function buildNeck(){
+  // 언어 전환 시 다시 그려도 선택한 답 유지
   $("#neckQs").innerHTML = NECK_QS.map((it,qi)=>`
-    <div class="neck-q"><p>${it.q}</p>
+    <div class="neck-q"><p>${L(it.q)}</p>
       <div class="neck-opts" data-q="${qi}">
-        ${it.opts.map((o,oi)=>`<button data-o="${oi}">${o[0]}</button>`).join("")}
+        ${it.opts.map((o,oi)=>`<button data-o="${oi}" class="${neckAns[qi]===o[1]?'sel':''}">${L(o[0])}</button>`).join("")}
       </div></div>`).join("");
   $("#neckQs").onclick = (e)=>{
     const b = e.target.closest("button"); if(!b) return;
@@ -1089,29 +1390,36 @@ function buildNeck(){
   };
 }
 $("#btnNeckResult").onclick = ()=>{
-  if(neckAns.some(a=>a===null)){ alert("모든 문항에 답해 주세요."); return; }
+  if(neckAns.some(a=>a===null)){ alert(L(NECK_T.answerAll)); return; }
   const total = neckAns.reduce((a,b)=>a+b,0);
-  const tier = total<=2 ? {name:"낮음", cls:"var(--ok)", msg:"지금처럼 관리하세요."}
-    : total<=5 ? {name:"주의", cls:"var(--warn)", msg:"작업 중 스트레칭을 습관화하세요. 아래 알림을 켜두면 좋아요."}
-    : {name:"높음", cls:"var(--danger)", msg:"부담이 큰 상태예요. 작업대 높이 조정과 상담을 권해요."};
+  const tier = total<=2 ? {name:L(NECK_T.low), cls:"var(--ok)", msg:L(NECK_T.lowMsg)}
+    : total<=5 ? {name:L(NECK_T.mid), cls:"var(--warn)", msg:L(NECK_T.midMsg)}
+    : {name:L(NECK_T.high), cls:"var(--danger)", msg:L(NECK_T.highMsg)};
   const numb = neckAns[2] === 2
-    ? `<p class="sub" style="font-size:15px; margin-top:6px;">팔·손 저림이 잦다면 목 신경 관련 신호일 수 있어요 — 근로자건강센터(1577-6497) 상담을 권합니다.</p>` : "";
+    ? `<p class="sub" style="font-size:15px; margin-top:6px;">${L(NECK_T.numb)}</p>` : "";
+  // 4점 이상: 상담 권고를 경고(빨강)로 강조 + 주변 병원 찾기 (지도앱 연결)
+  const consult = total >= 4
+    ? `<div style="margin-top:10px; padding:12px; border-radius:10px; background:#FBEAE8; border:1.5px solid var(--danger);">
+         <p style="color:var(--danger); font-weight:800; font-size:16px; line-height:1.45;">${L(NECK_T.consult)}</p>
+         <button class="btn btn--ghost" id="btnFindHosp" style="margin-top:10px; background:#fff; border:1.5px solid var(--danger); color:var(--danger);">${L(NECK_T.findHosp)}</button>
+       </div>` : "";
   $("#neckResult").innerHTML =
-    `<div style="font-size:18px; font-weight:700;">목 부담: <span style="color:${tier.cls}">${tier.name}</span> (${total}점)</div>
-     <p class="sub" style="font-size:15px;">${tier.msg}</p>${numb}
-     <div style="margin-top:10px;">${STRETCHES.map(s=>`<div class="stretch-item">${s}</div>`).join("")}</div>`;
+    `<div style="font-size:18px; font-weight:700;">${L(NECK_T.strain)}: <span style="color:${tier.cls}">${tier.name}</span> (${total})</div>
+     <p class="sub" style="font-size:15px;">${tier.msg}</p>${numb}${consult}
+     <div style="margin-top:10px;">${STRETCHES.map(s=>`<div class="stretch-item">${L(s)}</div>`).join("")}</div>`;
+  const hospBtn = $("#btnFindHosp");
+  if(hospBtn) hospBtn.onclick = ()=> window.open("https://map.kakao.com/?q=" + encodeURIComponent("정형외과"), "_blank");
 };
 // 스트레칭 알림: 데모에선 토글 상태만 유지 + 미리듣기 제공 (실서비스: OS 로컬 알림)
 let neckTimer = null;
-const stretchScript = "목 스트레칭 시간입니다. 턱을 지그시 당겨 5초. 머리를 옆으로 지그시 15초. 어깨를 으쓱 올렸다가 툭 떨어뜨리세요.";
 $("#neckAlarm").onclick = function(){
   this.classList.toggle("on");
   if(this.classList.contains("on")){
-    speak ? speak("2시간마다 스트레칭 알림을 켰어요.") : null;
-    neckTimer = setInterval(()=>speakKo(stretchScript), 2*60*60*1000);
+    speak(L(NECK_T.alarmOn));
+    neckTimer = setInterval(()=>speak(L(NECK_T.script)), 2*60*60*1000);
   } else { clearInterval(neckTimer); }
 };
-$("#btnStretchPreview").onclick = ()=> speakKo(stretchScript);
+$("#btnStretchPreview").onclick = ()=> speak(L(NECK_T.script));
 
 buildNeck();
 </script>
@@ -1278,11 +1586,14 @@ let handSamples = [], gripTimes = [], gripPhase = "open", gripT0 = 0, reps = 0;
 let spreadMax = 0, steadyPts = [], stepStart = 0;
 let sessionHistory = []; // PMPL 기록 (데모: 인메모리 / 실서비스: 백엔드 전송 지점)
 
-// MediaPipe handedness는 거울(셀피) 입력을 가정하고 라벨을 붙임.
-// 이 앱은 원본 프레임으로 추론하고 화면만 CSS 반전하므로 라벨을 뒤집어야 실제 손과 일치.
+// 주 사용 손 판별: 체크하는 동안 MediaPipe가 매 프레임 손 모양(엄지 위치 등)으로
+// 왼손/오른손을 추정하고, 가장 많이 나온 쪽을 채택합니다.
+// ※ 좌우 라벨 규약: 문서상 "거울 입력 기준"이지만 실제 기기(폰 전면카메라)에서
+//    라벨이 실물과 반대로 나오는 것이 확인되어 모델 출력을 그대로 사용하도록 수정.
+//    (손등만 보이거나 각도가 특이하면 드물게 틀릴 수 있음)
 function trackHandedness(res){
   const c = res.handedness?.[0]?.[0]; if(!c) return;
-  handSamples.push(c.categoryName === "Left" ? "Right" : "Left");
+  handSamples.push(c.categoryName);
 }
 
 function setStep(s){
@@ -1402,6 +1713,7 @@ function finishShoulder(){
     shrug: shrugBase ? Math.max(0, (shrugBase - shrugMin)/shrugBase*100) : null, // 으쓱 범위 %
   };
   shoulderHistory.push(rec);
+  window.Store.save({ shoulder: shoulderHistory }); // 기기 내 영구 저장 (계정별)
   window.__todayChecked = true; renderToday();
   renderShoulderReport(rec);
   HandCheck.stop();
@@ -1439,6 +1751,7 @@ function finish(){
     tremor: tremorOf(steadyPts),                 // 떨림 지수
   };
   sessionHistory.push(rec);
+  window.Store.save({ hand: sessionHistory }); // 기기 내 영구 저장 (계정별)
   // 실서비스 연동 지점: rec을 PMPL 백엔드로 전송 (장기 베이스라인은 서버 계산 권장)
   window.__todayChecked = true;
   renderToday();
@@ -1450,17 +1763,49 @@ function finish(){
 // z-score 기준: |z|<1 초록 / <1.8 노랑 / 이상 빨강. 기준선 최소 3회.
 // 방향성: gripMs·tremor는 클수록 나쁨(z>0 악화), spread는 작을수록 나쁨(z<0 악화)
 const METRICS = [
-  { k:"gripMs", name:"주먹 쥐는 속도", unit:"ms/회", worse:+1, fmt:(v)=>Math.round(v)+"ms" },
-  { k:"spread", name:"손가락 벌림 범위", unit:"", worse:-1, fmt:(v)=>v.toFixed(2) },
-  { k:"tremor", name:"손 떨림", unit:"", worse:+1, fmt:(v)=>v.toFixed(1) },
+  { k:"gripMs", name:{ko:"주먹 쥐는 속도", vi:"Tốc độ nắm tay", en:"Grip speed"}, unit:"ms/회", worse:+1, fmt:(v)=>Math.round(v)+"ms" },
+  { k:"spread", name:{ko:"손가락 벌림 범위", vi:"Độ xòe ngón tay", en:"Finger spread"}, unit:"", worse:-1, fmt:(v)=>v.toFixed(2) },
+  { k:"tremor", name:{ko:"손 떨림", vi:"Run tay", en:"Hand tremor"}, unit:"", worse:+1, fmt:(v)=>v.toFixed(1) },
 ];
 // 어깨: 벌림각은 작아지면 악화(-1), 좌우 비대칭은 커지면 악화(+1)
 const SH_METRICS = [
-  { k:"absL", name:"왼팔 벌림각", worse:-1, fmt:(v)=>Math.round(v)+"°" },
-  { k:"absR", name:"오른팔 벌림각", worse:-1, fmt:(v)=>Math.round(v)+"°" },
-  { k:"asym", name:"좌우 균형(차이)", worse:+1, fmt:(v)=>Math.round(v)+"°" },
-  { k:"shrug", name:"으쓱 범위", worse:-1, fmt:(v)=>Math.round(v)+"%" },
+  { k:"absL", name:{ko:"왼팔 벌림각", vi:"Góc dang tay trái", en:"Left arm angle"}, worse:-1, fmt:(v)=>Math.round(v)+"°" },
+  { k:"absR", name:{ko:"오른팔 벌림각", vi:"Góc dang tay phải", en:"Right arm angle"}, worse:-1, fmt:(v)=>Math.round(v)+"°" },
+  { k:"asym", name:{ko:"좌우 균형(차이)", vi:"Cân bằng trái-phải", en:"L/R balance (diff)"}, worse:+1, fmt:(v)=>Math.round(v)+"°" },
+  { k:"shrug", name:{ko:"으쓱 범위", vi:"Biên độ nhún vai", en:"Shrug range"}, worse:-1, fmt:(v)=>Math.round(v)+"%" },
 ];
+// 리포트/추이 공용 번역 (L·lang은 전역 스크립트에서 공유)
+const REP_T = {
+  failed:{ ko:"측정 실패", vi:"Đo thất bại", en:"Measurement failed" },
+  thisTime:{ ko:"이번: ", vi:"Lần này: ", en:"Now: " },
+  usual:{ ko:"평소 ", vi:"Bình thường ", en:"Usual " },
+  collecting:{ ko:"기준선 수집 중", vi:"Đang thu thập mức chuẩn", en:"Building baseline" },
+  handSec:{ ko:"🖐️ 손목", vi:"🖐️ Cổ tay", en:"🖐️ Wrist" },
+  shSec:{ ko:"💪 어깨", vi:"💪 Vai", en:"💪 Shoulder" },
+  domHand:{ ko:"주 사용 손", vi:"Tay thuận", en:"Dominant hand" },
+  leftH:{ ko:"왼손", vi:"Tay trái", en:"Left" }, rightH:{ ko:"오른손", vi:"Tay phải", en:"Right" },
+  domNote:{ ko:"체크 중 카메라에 비친 손 모양으로 AI가 추정", vi:"AI ước tính từ hình dáng tay trên camera", en:"Estimated by AI from the hand shape on camera" },
+  emptyReport:{ ko:"손 체크를 완료하면 결과가 표시됩니다.", vi:"Hoàn thành kiểm tra để xem kết quả.", en:"Complete a check to see results." },
+  gotWorse:{ ko:"이(가) 평소보다 눈에 띄게 나빠졌어요", vi:" xấu đi rõ rệt so với bình thường", en:" is noticeably worse than usual" },
+  transient:{ ko:"일시적일 수 있어요. 2~3일 계속되면 근로자건강센터(1577-6497) 상담을 권해요. 이 알림은 진단이 아닙니다.",
+    dg:"일시적일 수도 있어예. 2~3일 계속되믄 근로자건강센터(1577-6497) 상담 받아보이소. 이 알림은 진단이 아입니더.",
+    vi:"Có thể chỉ tạm thời. Nếu kéo dài 2~3 ngày, hãy tư vấn Trung tâm Sức khỏe NLĐ (1577-6497). Đây không phải chẩn đoán.",
+    en:"It may be temporary. If it continues 2–3 days, consult the Workers' Health Center (1577-6497). This alert is not a diagnosis." },
+  needThree:{ ko:"기준선을 만들려면 부위별 3회 이상 필요해요 (손목 {h}회 · 어깨 {s}회 기록됨).",
+    vi:"Cần ít nhất 3 lần mỗi bộ phận để tạo mức chuẩn (cổ tay {h} · vai {s}).",
+    en:"At least 3 checks per body part are needed for a baseline (wrist {h} · shoulder {s})." },
+  similar:{ ko:"✅ 기준선(손목 {h} · 어깨 {s})과 비교해 평소와 비슷합니다. 꾸준히 기록해 주세요!",
+    dg:"✅ 기준선(손목 {h} · 어깨 {s})하고 비교해서 평소랑 비슷합니더. 꾸준히 기록하이소!",
+    vi:"✅ So với mức chuẩn (cổ tay {h} · vai {s}), tương tự bình thường. Hãy ghi chép đều đặn!",
+    en:"✅ Similar to your baseline (wrist {h} · shoulder {s}). Keep recording regularly!" },
+  times:{ ko:"회", vi:" lần", en:"×" },
+  collectingShort:{ ko:"수집 중", vi:"đang thu thập", en:"building" },
+  recent:{ ko:"최근 ", vi:"Gần nhất ", en:"Latest " },
+  lowerBetter:{ ko:"낮을수록 좋아요", vi:"Càng thấp càng tốt", en:"lower is better" },
+  higherBetter:{ ko:"높을수록 좋아요", vi:"Càng cao càng tốt", en:"higher is better" },
+  trendEmpty:{ ko:"체크를 2회 이상 하면 항목별 변화 그래프가 표시됩니다.", vi:"Kiểm tra từ 2 lần trở lên để xem biểu đồ thay đổi.", en:"Check at least twice to see trend graphs." },
+};
+const mName = (m)=> L(m.name);
 function baselineOf(history, metrics, excludeLast){
   const h = excludeLast ? history.slice(0,-1) : history;
   if(h.length < 3) return null;
@@ -1474,15 +1819,15 @@ function baselineOf(history, metrics, excludeLast){
 function metricRows(rec, metrics, base){
   return metrics.map(m=>{
     const v = rec[m.k];
-    if(v == null) return `<div class="light-row"><span class="light-dot y"></span><span class="light-name">${m.name}</span><span class="light-val">측정 실패</span></div>`;
-    let cls = "g", note = "이번: " + m.fmt(v);
+    if(v == null) return `<div class="light-row"><span class="light-dot y"></span><span class="light-name">${mName(m)}</span><span class="light-val">${L(REP_T.failed)}</span></div>`;
+    let cls = "g", note = L(REP_T.thisTime) + m.fmt(v);
     if(base && base[m.k]){
       const z = (v - base[m.k].mu) / base[m.k].sd;
       const bad = z * m.worse;
       cls = bad > 1.8 ? "r" : bad > 1.0 ? "y" : "g";
-      note += `<br>평소 ${m.fmt(base[m.k].mu)} (z=${z.toFixed(1)})`;
-    } else note += "<br>기준선 수집 중";
-    return `<div class="light-row"><span class="light-dot ${cls}"></span><span class="light-name">${m.name}</span><span class="light-val">${note}</span></div>`;
+      note += `<br>${L(REP_T.usual)}${m.fmt(base[m.k].mu)} (z=${z.toFixed(1)})`;
+    } else note += "<br>" + L(REP_T.collecting);
+    return `<div class="light-row"><span class="light-dot ${cls}"></span><span class="light-name">${mName(m)}</span><span class="light-val">${note}</span></div>`;
   }).join("");
 }
 function flagsOf(rec, metrics, base){
@@ -1491,14 +1836,15 @@ function flagsOf(rec, metrics, base){
   for(const m of metrics){
     if(rec[m.k]==null || !base[m.k]) continue;
     const bad = ((rec[m.k]-base[m.k].mu)/base[m.k].sd) * m.worse;
-    if(bad > 1.8) flags.push(`<b style="color:var(--danger)">${m.name}</b>이(가) 평소보다 눈에 띄게 나빠졌어요`);
+    if(bad > 1.8) flags.push(`<b style="color:var(--danger)">${mName(m)}</b>${L(REP_T.gotWorse)}`);
   }
   return flags;
 }
 let lastHandHTML = "", lastShHTML = "";
+let lastHandRec = null, lastShRec = null; // 언어 전환 시 리포트 다시 그리기용
 function renderCombined(){
   const html = lastHandHTML + lastShHTML;
-  $("#lightReport").innerHTML = html || '<div class="sub">손 체크를 완료하면 결과가 표시됩니다.</div>';
+  $("#lightReport").innerHTML = html || `<div class="sub">${L(REP_T.emptyReport)}</div>`;
 }
 function renderPmpl(){
   const el = $("#pmplBody");
@@ -1509,26 +1855,92 @@ function renderPmpl(){
     ...(shoulderHistory.length ? flagsOf(shoulderHistory.at(-1), SH_METRICS, bS) : []),
   ];
   const nH = sessionHistory.length, nS = shoulderHistory.length;
+  const cnt = (b)=> b ? b.n + L(REP_T.times) : L(REP_T.collectingShort);
   if(!bH && !bS){
-    el.innerHTML = `<div class="sub">기준선을 만들려면 부위별 3회 이상 필요해요 (손목 ${nH}회 · 어깨 ${nS}회 기록됨).</div>`;
+    el.innerHTML = `<div class="sub">${L(REP_T.needThree).replace("{h}", nH).replace("{s}", nS)}</div>`;
     return;
   }
   el.innerHTML = flags.length
-    ? `<p>⚠️ ${flags.join("<br>⚠️ ")}</p><p class="sub" style="font-size:15px; margin-top:8px;">일시적일 수 있어요. 2~3일 계속되면 근로자건강센터(1577-6497) 상담을 권해요. 이 알림은 진단이 아닙니다.</p>`
-    : `<p>✅ 기준선(손목 ${bH?bH.n+"회":"수집 중"} · 어깨 ${bS?bS.n+"회":"수집 중"})과 비교해 평소와 비슷합니다. 꾸준히 기록해 주세요!</p>`;
+    ? `<p>⚠️ ${flags.join("<br>⚠️ ")}</p><p class="sub" style="font-size:15px; margin-top:8px;">${L(REP_T.transient)}</p>`
+    : `<p>${L(REP_T.similar).replace("{h}", cnt(bH)).replace("{s}", cnt(bS))}</p>`;
 }
 function renderReport(rec){
+  lastHandRec = rec;
   const base = baselineOf(sessionHistory, METRICS, true);
-  lastHandHTML = `<div style="font-weight:700; margin:4px 0 2px;">🖐️ 손목</div>` +
+  lastHandHTML = `<div style="font-weight:700; margin:4px 0 2px;">${L(REP_T.handSec)}</div>` +
     metricRows(rec, METRICS, base) +
-    `<div class="light-row"><span class="light-dot g"></span><span class="light-name">주 사용 손</span><span class="light-val">${rec.hand==="Left"?"왼손":rec.hand==="Right"?"오른손":"-"}</span></div>`;
-  renderCombined(); renderPmpl();
+    `<div class="light-row"><span class="light-dot g"></span><span class="light-name">${L(REP_T.domHand)}</span><span class="light-val">${rec.hand==="Left"?L(REP_T.leftH):rec.hand==="Right"?L(REP_T.rightH):"-"}<br><span style="font-size:12px;">${L(REP_T.domNote)}</span></span></div>`;
+  renderCombined(); renderPmpl(); renderTrend();
 }
 function renderShoulderReport(rec){
+  lastShRec = rec;
   const base = baselineOf(shoulderHistory, SH_METRICS, true);
-  lastShHTML = `<div style="font-weight:700; margin:10px 0 2px;">💪 어깨</div>` + metricRows(rec, SH_METRICS, base);
-  renderCombined(); renderPmpl();
+  lastShHTML = `<div style="font-weight:700; margin:10px 0 2px;">${L(REP_T.shSec)}</div>` + metricRows(rec, SH_METRICS, base);
+  renderCombined(); renderPmpl(); renderTrend();
 }
+
+// ── 변화 추이 그래프 (내 패턴 · 누적 기록) ──
+// 항목별 미니 라인차트(SVG). 점이 2개 이상인 항목만 표시.
+// 악화 방향(z)이 아니라 원값 추이를 그대로 보여줘 "내 변화"를 직관적으로 확인.
+function sparkSVG(vals){
+  const W = 300, H = 64, P = 8;
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const span = (max - min) || 1;
+  const x = (i)=> P + (vals.length===1 ? (W-2*P)/2 : i*(W-2*P)/(vals.length-1));
+  const y = (v)=> H - P - (v - min)/span*(H-2*P);
+  const pts = vals.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`);
+  const dots = vals.map((v,i)=>
+    `<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="${i===vals.length-1?5:3.5}" fill="${i===vals.length-1?'#C9950A':'#1B2432'}"/>`).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto; display:block;" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="${pts.join(" ")}" fill="none" stroke="#1B2432" stroke-width="2.5" stroke-linejoin="round"/>${dots}</svg>`;
+}
+const dLabel = (ts)=>{ const d = new Date(ts); return `${d.getMonth()+1}/${d.getDate()}`; };
+function renderTrend(){
+  const el = $("#trendBody"); if(!el) return;
+  const groups = [
+    { title:L(REP_T.handSec), hist: sessionHistory, metrics: METRICS },
+    { title:L(REP_T.shSec), hist: shoulderHistory, metrics: SH_METRICS },
+  ];
+  let html = "";
+  for(const g of groups){
+    const rows = g.metrics.map(m=>{
+      const pts = g.hist.filter(r=>r[m.k]!=null);
+      if(pts.length < 2) return "";
+      const vals = pts.map(r=>r[m.k]);
+      const dirNote = m.worse === +1 ? L(REP_T.lowerBetter) : L(REP_T.higherBetter);
+      return `<div style="padding:10px 0; border-bottom:1px dashed var(--line);">
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <span style="font-weight:700; font-size:15px;">${mName(m)}</span>
+          <span style="font-size:13px; color:var(--steel);">${L(REP_T.recent)}${m.fmt(vals.at(-1))} · ${dirNote}</span>
+        </div>
+        ${sparkSVG(vals)}
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--steel);">
+          <span>${dLabel(pts[0].at)}</span><span>${dLabel(pts.at(-1).at)} (${pts.length}${L(REP_T.times)})</span>
+        </div>
+      </div>`;
+    }).join("");
+    if(rows) html += `<div style="font-weight:700; margin:6px 0 2px;">${g.title}</div>` + rows;
+  }
+  el.innerHTML = html || `<div class="sub">${L(REP_T.trendEmpty)}</div>`;
+}
+
+// ── 언어 전환 시 리포트/추이/체크 안내 다시 그리기 (applyLang에서 호출) ──
+window.__applyLangModule = ()=>{
+  if(lastHandRec) renderReport(lastHandRec);
+  if(lastShRec) renderShoulderReport(lastShRec);
+  if(!lastHandRec && !lastShRec){ renderCombined(); renderPmpl(); renderTrend(); }
+};
+
+// ── 로그인 시 저장된 기록 복원 (enterApp에서 호출) ──
+window.__restoreHistories = ()=>{
+  const d = window.Store.load();
+  sessionHistory = Array.isArray(d.hand) ? d.hand : [];
+  shoulderHistory = Array.isArray(d.shoulder) ? d.shoulder : [];
+  lastHandHTML = ""; lastShHTML = ""; lastHandRec = null; lastShRec = null;
+  renderCombined(); renderPmpl(); renderTrend();
+};
+// 자동 로그인이 이 모듈보다 먼저 실행된 경우(이론상 없음) 대비
+if(window.Store && window.Store.key) window.__restoreHistories();
 
 // ── 카메라 루프 (모드 분기) ──
 function drawLm(lm, conns, pointR){
