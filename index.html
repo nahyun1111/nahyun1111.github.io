@@ -234,6 +234,26 @@
     border-radius:12px; padding:15px; font-family:inherit; font-size:16px; font-weight:700; cursor:pointer; }
   .guest-btn{ width:100%; border:none; background:transparent; color:#9AA7B4;
     padding:8px; font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; text-decoration:underline; }
+  /* ── 관리자 대시보드 (기기 내 기록 요약) ── */
+  .admin-wrap{ position:absolute; inset:0; z-index:60; display:none; flex-direction:column; background:var(--bg); overflow-y:auto; }
+  .admin-wrap.show{ display:flex; }
+  .admin-head{ background:var(--ink); color:#fff; padding:14px 16px; display:flex; justify-content:space-between; align-items:center; }
+  .admin-head b{ font-family:'Black Han Sans'; font-size:19px; font-weight:400; }
+  .admin-body{ padding:14px; }
+  .stat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:12px; }
+  .stat{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 6px; text-align:center; }
+  .stat b{ display:block; font-size:22px; }
+  .stat span{ font-size:12px; color:var(--steel); }
+  .risk-chip{ display:inline-block; padding:2px 9px; border-radius:999px; font-weight:700; font-size:12px; white-space:nowrap; }
+  .risk-chip.r0{ background:#DFF0E5; color:var(--ok); }
+  .risk-chip.r1{ background:#FBEED2; color:var(--safety-dk); }
+  .risk-chip.r2{ background:#F8DEDB; color:var(--danger); }
+  .worker-row{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:8px; }
+  .worker-row .wr-top{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .worker-row .wr-detail{ display:none; margin-top:10px; border-top:1px dashed var(--line); padding-top:8px; font-size:13px; line-height:1.7; }
+  .worker-row.open .wr-detail{ display:block; }
+  .admin-form input{ width:100%; padding:11px; border:1.5px solid var(--line); border-radius:10px; font-family:inherit; font-size:15px; margin-bottom:8px; }
+
   .auth-fineprint{ color:#6B7885; font-size:12px; text-align:center; line-height:1.5; margin-top:4px; }
   .auth-switch{ color:#9AA7B4; font-size:14px; text-align:center; margin-top:14px; }
   .auth-switch b{ color:var(--safety); cursor:pointer; }
@@ -258,6 +278,52 @@
 <body>
 <div class="phone">
 
+  <!-- ═══ 관리자 대시보드 (이 기기에 기록된 작업자 요약 · admin 계정 전용) ═══ -->
+  <div class="admin-wrap" id="adminScreen">
+    <div class="admin-head">
+      <b>🛠️ 관리자 대시보드</b>
+      <button class="btn btn--ghost" id="btnAdminLogout" style="width:auto; padding:8px 14px; font-size:14px; background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,.4);">로그아웃</button>
+    </div>
+    <div class="admin-body">
+      <div class="stat-grid">
+        <div class="stat"><b id="stTotal">0</b><span>전체 작업자</span></div>
+        <div class="stat"><b id="stToday">0</b><span>오늘 체크</span></div>
+        <div class="stat"><b id="stCaution" style="color:var(--safety-dk)">0</b><span>주의</span></div>
+        <div class="stat"><b id="stDanger" style="color:var(--danger)">0</b><span>상담 권고</span></div>
+      </div>
+      <select id="adminRiskFilter" style="width:100%; padding:10px; border:1.5px solid var(--line); border-radius:10px; font-family:inherit; font-size:15px; margin-bottom:10px; background:var(--card);">
+        <option value="">위험도 전체</option>
+        <option value="정상">정상</option>
+        <option value="주의">주의</option>
+        <option value="상담 권고">상담 권고</option>
+      </select>
+      <div id="adminList"></div>
+      <div class="disclaimer" style="margin:4px 2px 14px;">
+        ⚠️ 종합 위험도는 자가체크 결과의 단순 요약이며 <b>의학적 진단이 아닙니다.</b><br>
+        이 대시보드는 <b>이 기기에서 기록된 작업자</b>만 표시해요 (공용 태블릿 운용 기준).
+      </div>
+      <div class="card admin-form">
+        <span class="card__label">신규 작업자 등록</span>
+        <input id="nwId" placeholder="아이디 (4자 이상)" autocomplete="off" />
+        <input id="nwPw" placeholder="비밀번호 (4자 이상)" type="password" />
+        <input id="nwName" placeholder="이름" autocomplete="off" />
+        <input id="nwSite" placeholder="작업장 (예: 성서 3공단)" autocomplete="off" />
+        <div class="auth-err" id="nwErr" style="color:var(--danger); font-size:14px; min-height:18px;"></div>
+        <button class="btn btn--main" id="btnAdminCreate">등록</button>
+      </div>
+      <div class="card">
+        <span class="card__label">시연용 데모 데이터</span>
+        <div class="sub" style="font-size:13px; margin-bottom:10px;">
+          모의 작업자 30명 + 2주 치 기록 생성 (계정 demo01~demo30 · 비밀번호 1234).<br>
+          공통 질환 시나리오: 손목 이상 20명(66.7%) = 주의 12 + 상담 권고 8.
+        </div>
+        <button class="btn btn--main" id="btnSeedDemo">🎭 데모 데이터 채우기 (30명)</button>
+        <button class="btn btn--ghost" id="btnRemoveDemo" style="margin-top:8px;">🗑️ 데모 데이터 삭제</button>
+        <div class="sub" id="seedStatus" style="font-size:13px; margin-top:8px;"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══ 로그인 / 회원가입 (앱 위 오버레이) ═══
        서버 없이 동작하는 자체 계정 방식. 계정은 이 기기의 localStorage에
        저장되어 앱을 껐다 켜도 유지되며, 비밀번호는 해시로만 저장됩니다.
@@ -273,6 +339,7 @@
       <div class="auth-bottom">
         <button class="auth-primary" id="btnGoSignup">회원가입하고 시작하기</button>
         <button class="auth-secondary" id="btnGoLogin">이미 계정이 있어요 (로그인)</button>
+        <button class="auth-secondary" id="btnFaceLoginGo">😀 얼굴로 로그인 (빠른 입장)</button>
         <button class="guest-btn" id="btnGuest">로그인 없이 둘러보기</button>
         <p class="auth-fineprint">가입하면 매일 체크 기록이 나에게 쌓여<br>변화 추이를 볼 수 있어요 · 데모 버전</p>
       </div>
@@ -290,6 +357,21 @@
       <div style="flex:1"></div>
       <button class="onb-next" id="btnLoginDo">로그인</button>
       <div class="auth-switch">계정이 없으세요? <b id="lnkToSignup">회원가입</b></div>
+    </div>
+
+    <!-- 2.5) 얼굴 로그인 / 얼굴 등록 (선택 편의 기능) -->
+    <div class="auth-screen" id="auth-face">
+      <div class="onb-title" id="faceTitle">얼굴로 로그인</div>
+      <div class="onb-sub" id="faceSub">화면에 얼굴을 맞추면 자동으로 인식해요</div>
+      <div style="position:relative; border-radius:14px; overflow:hidden; background:#0d1117; aspect-ratio:1/1.05;">
+        <video id="faceVideo" autoplay playsinline muted
+          style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scaleX(-1);"></video>
+      </div>
+      <div class="auth-err" id="faceStatus" style="min-height:36px; margin-top:10px; color:#cfd6dd;"></div>
+      <div style="flex:1"></div>
+      <button class="onb-next" id="btnFaceCapture">📸 지금 인식하기</button>
+      <button class="auth-secondary" id="btnFaceCancel" style="margin-top:10px;">취소 / 건너뛰기</button>
+      <p class="auth-fineprint" style="margin-top:10px;">얼굴 정보(특징값 128개)는 이 기기에만 저장돼요.<br>사진에 속을 수 있는 편의 기능이며 보안 수단이 아니에요 — 비밀번호 로그인은 언제든 가능해요.</p>
     </div>
 
     <!-- 3) 회원가입 ①: 작업장 선택 -->
@@ -435,6 +517,7 @@
           소음성 난청은 <b>고음(4,000Hz 부근)부터 조용히</b> 시작됩니다. 본인은 눈치채기 어렵습니다.<br>
           📢 조용한 곳에서, <b>이어폰 착용</b>, 미디어 볼륨 50%로 맞추고 시작하세요.
         </div>
+        <div class="sub" id="hearLast" style="font-size:13px; margin-top:8px;"></div>
         <button class="btn btn--main" id="btnHearStart" style="margin-top:12px;">▶ 자가체크 시작 (약 2분)</button>
       </div>
 
@@ -490,6 +573,7 @@
            설문 + 스트레칭 알림 방식으로 설계 (멘토 피드백 반영) -->
       <div class="card">
         <span class="card__label" id="lblNeckTitle">목 부담 설문 · 1분 자가체크</span>
+        <div class="sub" id="neckLast" style="font-size:13px; margin-bottom:6px;"></div>
         <div id="neckQs"></div>
         <button class="btn btn--ghost" id="btnNeckResult">결과 보기</button>
         <div id="neckResult" style="margin-top:12px;"></div>
@@ -503,6 +587,10 @@
 
     <!-- ═══ 내 패턴 ═══ -->
     <section class="screen" id="screen-pattern">
+      <div class="card">
+        <span class="card__label" id="lblComposite">종합 상태 · 최근 기록 요약</span>
+        <div id="compositeBody"><div class="sub">체크나 일지를 기록하면 종합 상태가 표시됩니다.</div></div>
+      </div>
       <div class="card">
         <span class="card__label" id="lblLight">신호등 리포트 · 이번 체크</span>
         <div id="lightReport"><div class="sub">손 체크를 완료하면 결과가 표시됩니다.</div></div>
@@ -725,6 +813,7 @@ const UI = {
   neckAlarmLabel:{ ko:"🔔 2시간마다 목 스트레칭 알림", vi:"🔔 Nhắc giãn cơ cổ mỗi 2 giờ", en:"🔔 Neck stretch reminder every 2h" },
   btnStretchPreview:{ ko:"▶ 스트레칭 안내 미리 듣기", vi:"▶ Nghe thử hướng dẫn giãn cơ", en:"▶ Preview stretch guidance" },
   // 내 패턴
+  lblComposite:{ ko:"종합 상태 · 최근 기록 요약", vi:"Trạng thái tổng hợp · Tóm tắt gần đây", en:"Overall Status · Recent Summary" },
   lblLight:{ ko:"신호등 리포트 · 이번 체크", vi:"Báo cáo đèn tín hiệu · Lần này", en:"Traffic Light Report · This check" },
   lblPmpl:{ ko:"내 기준선 대비 변화 (PMPL)", vi:"Thay đổi so với mức chuẩn của tôi (PMPL)", en:"Change vs My Baseline (PMPL)" },
   lblTrend:{ ko:"변화 추이 · 누적 기록 그래프", vi:"Xu hướng thay đổi · Biểu đồ tích lũy", en:"Trend · Cumulative Graph" },
@@ -758,6 +847,11 @@ function applyLang(){
   if(window.renderDiary) renderDiary();
   if(window.__applyLangHear) window.__applyLangHear();
   if(window.__applyLangModule) window.__applyLangModule();
+  if(window.__refreshLastLines) window.__refreshLastLines();
+  if(window.renderComposite) window.renderComposite();
+}
+function setLangChips(){
+  document.querySelectorAll("#langChips .lang-chip").forEach(c=>c.classList.toggle("on", c.dataset.lang===lang));
 }
 $("#langChips").addEventListener("click", (e)=>{
   const b = e.target.closest(".lang-chip"); if(!b) return;
@@ -765,6 +859,13 @@ $("#langChips").addEventListener("click", (e)=>{
   b.classList.add("on");
   lang = b.dataset.lang;
   applyLang();
+  // 선택 언어를 계정에 저장 → 다음 로그인 때 자동 적용 (파이썬판 preferred_language 이식)
+  try{
+    if(profile.id && profile.via !== "guest"){
+      const accs = loadAccounts();
+      if(accs[profile.id]){ accs[profile.id].langPref = lang; saveAccounts(accs); }
+    }
+  }catch(e){}
   speak(t("homeGreetSub")); // 전환 확인 음성
 });
 
@@ -972,7 +1073,7 @@ function renderToday(){
   $("#todayStatus").textContent = done ? t("todayDone") : t("todayNotYet");
 }
 
-buildQuick(); renderDiary(); renderHeat(); applyLang();
+// (초기화 호출은 스크립트 맨 끝에서 — 모든 정의가 끝난 뒤 실행)
 
 // ═══════════════════════════════════════════════════════════════
 //  로그인 / 회원가입 (서버 없이 기기 내 저장 — 안드로이드 앱/단독 실행용)
@@ -1041,6 +1142,60 @@ async function api(path, body){
   }
   return { ok:false, error:"알 수 없는 요청이에요." };
 }
+const RISK_I18N = {
+  "정상":{ ko:"정상", vi:"Bình thường", en:"Normal" },
+  "주의":{ ko:"주의", vi:"Chú ý", en:"Caution" },
+  "상담 권고":{ ko:"상담 권고", vi:"Nên tư vấn", en:"Consult advised" },
+};
+const RISK_ORDER = { "정상":0, "주의":1, "상담 권고":2 };
+const RISK_NAMES = ["정상","주의","상담 권고"];
+const riskCls = (r)=> "r" + (RISK_ORDER[r] ?? 0);
+
+// 사용자 저장 데이터에서 부위별 최신 위험도 + 종합 위험도 산출
+// (파이썬판 _composite_risk 이식 — 자가체크 요약이며 의학적 진단이 아님)
+function latestRisks(data){
+  const last = (arr)=> Array.isArray(arr) && arr.length ? arr[arr.length-1] : null;
+  const L4 = {
+    hand: last(data.hand), shoulder: last(data.shoulder),
+    hearing: last(data.hearing), neck: last(data.neck),
+  };
+  let worst = 0;
+  for(const k of ["hand","shoulder","hearing","neck"]){
+    const r = L4[k];
+    if(r && r.risk in RISK_ORDER) worst = Math.max(worst, RISK_ORDER[r.risk]);
+  }
+  const pain = last(data.diary);
+  if(pain){
+    if((pain.sev||0) >= 3) worst = Math.max(worst, 2);
+    else if(pain.sev === 2) worst = Math.max(worst, 1);
+  }
+  return { parts:L4, pain, composite: RISK_NAMES[worst] };
+}
+const COMP_T = {
+  empty:{ ko:"체크나 일지를 기록하면 종합 상태가 표시됩니다.", vi:"Ghi chép để xem trạng thái tổng hợp.", en:"Record a check or diary entry to see your summary." },
+  parts:{ hand:{ko:"손목",vi:"Cổ tay",en:"Wrist"}, shoulder:{ko:"어깨",vi:"Vai",en:"Shoulder"},
+          hearing:{ko:"청력",vi:"Thính lực",en:"Hearing"}, neck:{ko:"목",vi:"Cổ",en:"Neck"}, pain:{ko:"통증",vi:"Đau",en:"Pain"} },
+  note:{ ko:"자가체크 요약이며 의학적 진단이 아닙니다.", vi:"Chỉ là tóm tắt tự kiểm tra, không phải chẩn đoán.", en:"Self-check summary — not a medical diagnosis." },
+};
+function renderComposite(){
+  const el = $("#compositeBody"); if(!el) return;
+  const info = latestRisks(window.Store.load());
+  const rows = [];
+  for(const k of ["hand","shoulder","hearing","neck"]){
+    const r = info.parts[k];
+    if(r) rows.push(`<span style="margin-right:10px; font-size:14px;">${L(COMP_T.parts[k])} <span class="risk-chip ${riskCls(r.risk)}">${L(RISK_I18N[r.risk])}</span></span>`);
+  }
+  if(info.pain) rows.push(`<span style="font-size:14px;">${L(COMP_T.parts.pain)} <b>${sevLabel(info.pain.sev)}</b></span>`);
+  if(!rows.length){ el.innerHTML = `<div class="sub">${L(COMP_T.empty)}</div>`; return; }
+  el.innerHTML =
+    `<div style="font-size:19px; font-weight:800; margin-bottom:8px;">
+       <span class="risk-chip ${riskCls(info.composite)}" style="font-size:15px; padding:5px 14px;">${L(RISK_I18N[info.composite])}</span>
+     </div>
+     <div style="line-height:2;">${rows.join("")}</div>
+     <div class="sub" style="font-size:12px; margin-top:6px;">${L(COMP_T.note)}</div>`;
+}
+window.renderComposite = renderComposite;
+
 const SESSION_KEY = "sonjikimi_session_v1"; // 자동 로그인용 세션
 
 function enterApp(){
@@ -1048,8 +1203,15 @@ function enterApp(){
   window.Store.setUser(profile.id);
   const saved = window.Store.load();
   diary = Array.isArray(saved.diary) ? saved.diary : [];
+  // 계정에 저장된 언어 적용
+  try{
+    const acc = profile.id ? loadAccounts()[profile.id] : null;
+    if(acc && acc.langPref){ lang = acc.langPref; setLangChips(); }
+  }catch(e){}
   renderDiary();
   if(window.__restoreHistories) window.__restoreHistories();
+  if(window.__refreshLastLines) window.__refreshLastLines();
+  renderComposite();
   // 자동 로그인 세션 저장 (게스트 제외)
   try{
     if(profile.id && profile.via !== "guest") localStorage.setItem(SESSION_KEY, String(profile.id).toLowerCase());
@@ -1088,6 +1250,10 @@ $("#btnLoginDo").onclick = async ()=>{
   try{
     const r = await api("/api/login", { id, pw });
     if(!r.ok){ $("#loginErr").textContent = r.error || "로그인에 실패했어요."; return; }
+    if(r.role === "admin"){ // 관리자는 대시보드로
+      try{ localStorage.setItem(SESSION_KEY, id.toLowerCase()); }catch(e){}
+      showAdmin(); return;
+    }
     profile = { id:id.toLowerCase(), name:r.name, role:r.role, site:r.site, job:r.job, via:"login" };
     enterApp();
   }catch(e){ console.error(e); $("#loginErr").textContent = "로그인 처리 중 문제가 생겼어요. 다시 시도해 주세요."; }
@@ -1154,7 +1320,7 @@ $("#btnSignupDo").onclick = async ()=>{
     const r = await api("/api/signup", { id, pw, name:signup.name, role:signup.role, site:signup.site, job:signup.job });
     if(!r.ok){ $("#signErr").textContent = r.error || "가입에 실패했어요."; $("#btnSignupDo").disabled = false; return; }
     profile = { id:id.toLowerCase(), name:signup.name, role:signup.role, site:signup.site, job:signup.job, via:"signup" };
-    enterApp();
+    startFace("enroll"); // 가입 직후 얼굴 등록 제안 (건너뛰기 가능 → enterApp)
   }catch(e){ console.error(e); $("#signErr").textContent = "가입 처리 중 문제가 생겼어요. 다시 시도해 주세요."; $("#btnSignupDo").disabled = false; }
 };
 
@@ -1167,6 +1333,7 @@ window.addEventListener("load", ()=>{
     if(!sid) return;
     const acc = loadAccounts()[sid];
     if(!acc){ localStorage.removeItem(SESSION_KEY); return; }
+    if(acc.role === "admin"){ showAdmin(); return; }
     profile = { id:sid, name:acc.name, role:acc.role, site:acc.site, job:acc.job, via:"auto" };
     enterApp();
   }catch(e){ console.warn("자동 로그인 실패:", e); }
@@ -1178,6 +1345,370 @@ $("#btnLogout").onclick = ()=>{
   try{ localStorage.removeItem(SESSION_KEY); }catch(e){}
   location.reload();
 };
+
+// ═══════════════════════════════════════════════════════════════
+//  얼굴 로그인 (파이썬판 이식 · 기기 내 대조)
+//  face-api.js로 얼굴 특징값 128개를 뽑아 이 기기의 계정에 저장/대조.
+//  ⚠️ 사진에도 속을 수 있는 편의 기능(라이브니스 없음)이며 보안 수단 아님.
+// ═══════════════════════════════════════════════════════════════
+let faceMode = null, faceStream = null, faceApiReady = null;
+const FACEAPI_JS = "https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js";
+const FACEAPI_MODELS = "https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model";
+const FACE_MATCH_THRESHOLD = 0.5;
+
+function ensureFaceApi(){
+  if(faceApiReady) return faceApiReady;
+  faceApiReady = new Promise((resolve, reject)=>{
+    const s = document.createElement("script");
+    s.src = FACEAPI_JS;
+    s.onload = async ()=>{
+      try{
+        await faceapi.nets.tinyFaceDetector.loadFromUri(FACEAPI_MODELS);
+        await faceapi.nets.faceLandmark68Net.loadFromUri(FACEAPI_MODELS);
+        await faceapi.nets.faceRecognitionNet.loadFromUri(FACEAPI_MODELS);
+        resolve();
+      }catch(e){ faceApiReady = null; reject(e); }
+    };
+    s.onerror = ()=>{ faceApiReady = null; reject(new Error("script load fail")); };
+    document.head.appendChild(s);
+  });
+  return faceApiReady;
+}
+async function startFace(mode){
+  faceMode = mode;
+  $("#faceTitle").textContent = mode === "enroll" ? "얼굴 등록 (선택)" : "얼굴로 로그인";
+  $("#faceSub").textContent = mode === "enroll"
+    ? "등록해두면 다음부턴 얼굴만 보여도 입장돼요"
+    : "화면에 얼굴을 맞추고 아래 버튼을 누르세요";
+  showAuth("auth-face");
+  $("#faceStatus").textContent = "AI 얼굴 모델 준비 중... (첫 사용 시 인터넷 필요)";
+  try{ await ensureFaceApi(); }
+  catch(e){ $("#faceStatus").textContent = "얼굴 모델을 불러오지 못했어요 — 인터넷 연결을 확인하세요."; return; }
+  try{
+    faceStream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:"user", width:480, height:480 }, audio:false });
+    $("#faceVideo").srcObject = faceStream;
+    await $("#faceVideo").play();
+    $("#faceStatus").textContent = "준비 완료! 얼굴을 화면 가운데에 맞추세요.";
+  }catch(e){ $("#faceStatus").textContent = "카메라를 열 수 없어요 — 카메라 권한을 허용해 주세요."; }
+}
+function stopFace(){
+  if(faceStream){ faceStream.getTracks().forEach(t=>t.stop()); faceStream = null; }
+}
+async function captureDescriptor(){
+  const video = $("#faceVideo");
+  for(let i=0; i<10; i++){
+    const det = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
+      .withFaceLandmarks().withFaceDescriptor();
+    if(det && det.descriptor) return Array.from(det.descriptor);
+    await new Promise(r=>setTimeout(r, 200));
+  }
+  return null;
+}
+// 기기 내 대조: 등록된 얼굴 중 가장 가까운 계정 (유클리드 거리 < 0.5)
+function matchFaceLocal(desc){
+  const accounts = loadAccounts();
+  let best = null, bestKey = null, bestDist = 1e9;
+  for(const [key, acc] of Object.entries(accounts)){
+    if(!Array.isArray(acc.face) || acc.face.length !== 128) continue;
+    let s = 0;
+    for(let i=0;i<128;i++){ const d = desc[i]-acc.face[i]; s += d*d; }
+    const dist = Math.sqrt(s);
+    if(dist < bestDist){ best = acc; bestKey = key; bestDist = dist; }
+  }
+  if(!best) return { ok:false, error:"등록된 얼굴이 없어요. 먼저 가입 후 얼굴을 등록해 주세요." };
+  if(bestDist > FACE_MATCH_THRESHOLD)
+    return { ok:false, error:"얼굴을 못 알아봤어요. 조명을 밝게 하고 다시 시도하거나 비밀번호로 로그인하세요." };
+  return { ok:true, key:bestKey, acc:best };
+}
+$("#btnFaceLoginGo").onclick = ()=> startFace("login");
+$("#btnFaceCancel").onclick = ()=>{
+  stopFace();
+  if(faceMode === "enroll") enterApp(); // 가입은 이미 완료 → 건너뛰고 입장
+  else showAuth("auth-start");
+};
+$("#btnFaceCapture").onclick = async ()=>{
+  $("#btnFaceCapture").disabled = true;
+  $("#faceStatus").textContent = "얼굴을 인식하는 중...";
+  try{
+    const desc = await captureDescriptor();
+    if(!desc){ $("#faceStatus").textContent = "얼굴을 찾지 못했어요 — 조명을 밝게, 화면 가운데로 맞춰주세요."; return; }
+    if(faceMode === "enroll"){
+      const accs = loadAccounts();
+      if(accs[profile.id]){ accs[profile.id].face = desc; saveAccounts(accs); }
+      stopFace();
+      speak("얼굴 등록 완료. 다음부턴 얼굴로 바로 들어올 수 있어요.");
+      enterApp();
+    } else {
+      const r = matchFaceLocal(desc);
+      if(!r.ok){ $("#faceStatus").textContent = r.error; return; }
+      stopFace();
+      if(r.acc.role === "admin"){
+        try{ localStorage.setItem(SESSION_KEY, r.key); }catch(e){}
+        showAdmin(); return;
+      }
+      profile = { id:r.key, name:r.acc.name, role:r.acc.role, site:r.acc.site, job:r.acc.job, via:"face" };
+      enterApp();
+    }
+  }catch(e){ console.error(e); $("#faceStatus").textContent = "인식 중 오류가 났어요. 비밀번호로 로그인해 주세요."; }
+  finally{ $("#btnFaceCapture").disabled = false; }
+};
+
+// ═══════════════════════════════════════════════════════════════
+//  관리자 대시보드 (파이썬판 admin.html 이식 · 이 기기 기록 요약)
+//  기본 계정: admin / admin123 — 첫 실행 시 자동 생성
+// ═══════════════════════════════════════════════════════════════
+(async function ensureAdmin(){
+  try{
+    const accs = loadAccounts();
+    if(accs["admin"]) return;
+    const salt = Math.random().toString(36).slice(2,12) + Date.now().toString(36);
+    accs["admin"] = { id:"admin", salt, hash: await hashPw("admin123", salt),
+      name:"관리자", role:"admin", site:"", job:"", createdAt:new Date().toISOString() };
+    saveAccounts(accs);
+  }catch(e){ console.warn("관리자 계정 생성 실패:", e); }
+})();
+
+function adminWorkers(){
+  const accounts = loadAccounts();
+  const out = [];
+  const today = new Date(); const isToday = (t)=>{ const d = new Date(t);
+    return d.getFullYear()===today.getFullYear() && d.getMonth()===today.getMonth() && d.getDate()===today.getDate(); };
+  for(const [key, acc] of Object.entries(accounts)){
+    if(acc.role === "admin") continue;
+    const dataKey = "sonjikimi_data_v1_" + key;
+    let data = {}; try{ data = JSON.parse(localStorage.getItem(dataKey)) || {}; }catch(e){}
+    const info = latestRisks(data);
+    const allRecs = ["hand","shoulder","hearing","neck","diary"].flatMap(k=>data[k]||[]);
+    const lastAt = allRecs.length ? Math.max(...allRecs.map(r=>r.at||0)) : null;
+    out.push({ key, name:acc.name, role:acc.roleName||acc.role||"", site:acc.site||"", job:acc.job||"",
+      risk:info.composite, parts:info.parts, pain:info.pain, lastAt,
+      checkedToday: allRecs.some(r=>r.at && isToday(r.at)) });
+  }
+  return out;
+}
+function showAdmin(){
+  $("#authFlow").style.display = "none";
+  $("#adminScreen").classList.add("show");
+  renderAdmin();
+}
+function renderAdmin(){
+  const ws = adminWorkers();
+  const filter = $("#adminRiskFilter").value;
+  $("#stTotal").textContent = ws.length;
+  $("#stToday").textContent = ws.filter(w=>w.checkedToday).length;
+  $("#stCaution").textContent = ws.filter(w=>w.risk==="주의").length;
+  $("#stDanger").textContent = ws.filter(w=>w.risk==="상담 권고").length;
+  const shown = filter ? ws.filter(w=>w.risk===filter) : ws;
+  const fmtAt = (t)=> t ? `${new Date(t).getMonth()+1}/${new Date(t).getDate()}` : "-";
+  const chip = (r)=> r ? `<span class="risk-chip ${riskCls(r)}">${r}</span>` : '<span style="color:var(--steel)">-</span>';
+  $("#adminList").innerHTML = shown.length ? shown.map(w=>`
+    <div class="worker-row" data-key="${w.key}">
+      <div class="wr-top">
+        <div><b style="font-size:16px;">${w.name}</b> <span style="font-size:12px; color:var(--steel);">${w.key}</span><br>
+          <span style="font-size:12px; color:var(--steel);">${w.site}${w.job?" · "+w.job:""}</span></div>
+        <div style="text-align:right;">${chip(w.risk)}<br><span style="font-size:11px; color:var(--steel);">최근 ${fmtAt(w.lastAt)}</span></div>
+      </div>
+      <div class="wr-detail">
+        🖐️ 손목: ${w.parts.hand ? chip(w.parts.hand.risk)+" "+fmtAt(w.parts.hand.at) : "기록 없음"}<br>
+        💪 어깨: ${w.parts.shoulder ? chip(w.parts.shoulder.risk)+" "+fmtAt(w.parts.shoulder.at) : "기록 없음"}<br>
+        👂 청력: ${w.parts.hearing ? chip(w.parts.hearing.risk)+" "+fmtAt(w.parts.hearing.at) : "기록 없음"}<br>
+        🦴 목 설문: ${w.parts.neck ? chip(w.parts.neck.risk)+" "+w.parts.neck.total+"점 · "+fmtAt(w.parts.neck.at) : "기록 없음"}<br>
+        🎤 최근 통증: ${w.pain ? sevLabel(w.pain.sev)+" ("+(w.pain.part||"")+") · "+fmtAt(w.pain.at) : "기록 없음"}
+      </div>
+    </div>`).join("") : '<div class="sub" style="padding:10px;">표시할 작업자가 없어요.</div>';
+  document.querySelectorAll(".worker-row").forEach(row=>{
+    row.onclick = ()=> row.classList.toggle("open");
+  });
+}
+$("#adminRiskFilter").onchange = renderAdmin;
+$("#btnAdminLogout").onclick = ()=>{
+  try{ localStorage.removeItem(SESSION_KEY); }catch(e){}
+  location.reload();
+};
+$("#btnAdminCreate").onclick = async ()=>{
+  const id = $("#nwId").value.trim(), pw = $("#nwPw").value;
+  const name = $("#nwName").value.trim() || "작업자", site = $("#nwSite").value.trim();
+  const err = $("#nwErr"); err.textContent = "";
+  if(id.length < 4){ err.textContent = "아이디는 4자 이상으로 해주세요."; return; }
+  if(pw.length < 4){ err.textContent = "비밀번호는 4자 이상으로 해주세요."; return; }
+  const r = await api("/api/signup", { id, pw, name, role:"작업자", site, job:"" });
+  if(!r.ok){ err.textContent = r.error; return; }
+  $("#nwId").value = $("#nwPw").value = $("#nwName").value = $("#nwSite").value = "";
+  err.textContent = "";
+  renderAdmin();
+};
+
+// ═══════════════════════════════════════════════════════════════
+//  시연용 데모 데이터 (파이썬 seed_demo.py 이식)
+//  · demo01~demo30 / 비밀번호 1234 · 손목 이상 20명(주의12+상담8)
+//  · 그라인더(3공단)는 청력 저하 동반, 재봉·전자는 목 부담
+//  · 이미 있는 계정은 건너뜀 · 같은 시드라 실행마다 동일 데이터
+// ═══════════════════════════════════════════════════════════════
+function mulberry32(seed){ // 재현 가능한 난수 (파이썬 random.seed 대응)
+  let a = seed >>> 0;
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const DEMO_SITES = [
+  ["성서 1공단","자동차부품 조립"],["성서 2공단","기계금속 가공"],["성서 3공단","그라인더·연삭"],
+  ["성서 4공단","전기·전자 조립"],["성서 5차단지","섬유·재봉"],
+];
+const DEMO_WORKERS = [
+  ["박정호","반장",0,"dg"],["이순자","반원",0,"dg"],["김민수","사원",0,"ko"],
+  ["최영식","반원",0,"dg"],["정미경","사원",0,"ko"],["강대호","반장",1,"dg"],
+  ["윤성철","반원",1,"dg"],["한지영","사원",1,"ko"],["오세욱","반원",1,"dg"],
+  ["임창수","반원",1,"ko"],["서병기","반장",2,"dg"],["황인철","반원",2,"dg"],
+  ["응우옌 반 안","사원",2,"vi"],["문덕수","반원",2,"dg"],["배상현","사원",2,"ko"],
+  ["쩐 티 흐엉","사원",2,"vi"],["조경래","반원",2,"dg"],["신영호","반장",3,"ko"],
+  ["김보라","사원",3,"ko"],["이택근","반원",3,"dg"],["팜 반 뚜언","사원",3,"vi"],
+  ["장미란","반원",3,"ko"],["권오성","사원",3,"dg"],["남궁철","반장",4,"dg"],
+  ["유정숙","반원",4,"dg"],["홍성자","반원",4,"ko"],["안병완","사원",4,"dg"],
+  ["전미숙","반원",4,"ko"],["고재만","사원",4,"dg"],["송기택","반원",4,"dg"],
+];
+async function seedDemo(){
+  const rnd = mulberry32(20260702);
+  const ru = (a,b)=> a + rnd()*(b-a);                 // uniform
+  const ri = (a,b)=> Math.floor(ru(a, b+1));          // randint (양끝 포함)
+  const pick = (arr)=> arr[Math.floor(rnd()*arr.length)];
+  const sample = (range, n)=>{ const pool=[...range], out=[];  // 비복원 추출
+    for(let i=0;i<n;i++) out.push(pool.splice(Math.floor(rnd()*pool.length),1)[0]);
+    return out; };
+  const ts = (daysAgo, hour)=>{ const d = new Date(Date.now() - daysAgo*86400000);
+    d.setHours(hour ?? ri(17,20), ri(0,59), ri(0,59), 0); return d.getTime(); };
+
+  // 손목 시나리오 배정 후 셔플
+  const plan = [...Array(12).fill("주의"), ...Array(8).fill("상담 권고"), ...Array(10).fill("정상")];
+  for(let i=plan.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [plan[i],plan[j]]=[plan[j],plan[i]]; }
+
+  const accounts = loadAccounts();
+  const salt = "demo-seed-salt";                       // 시연 계정 공통 (실계정은 개별 솔트)
+  const hash = await hashPw("1234", salt);
+  let created = 0, skipped = 0;
+  const LV = { "정상":0, "주의":1, "상담 권고":2 };
+
+  for(let i=0; i<DEMO_WORKERS.length; i++){
+    const uid = "demo" + String(i+1).padStart(2,"0");
+    if(accounts[uid]){ skipped++; continue; }
+    const [name, pos, si, lg] = DEMO_WORKERS[i];
+    const [site, job] = DEMO_SITES[si];
+    accounts[uid] = { id:uid, salt, hash, name, role:pos, site, job,
+      langPref:lg, demo:true, createdAt:new Date(Date.now()-ri(20,40)*86400000).toISOString() };
+    const wrist = plan[i], cap = LV[wrist];
+    const data = { hand:[], shoulder:[], hearing:[], neck:[], diary:[] };
+
+    // ── 손목 체크 4~6회 (2주 분포) — 이상군은 최근으로 갈수록 악화
+    const n = ri(4,6);
+    const baseGrip = ru(720,880), baseSpread = ru(1.75,2.05), baseTremor = ru(2.2,3.6);
+    const days = sample([...Array(14).keys()], n).sort((a,b)=>b-a); // 과거→최근
+    if(i % 3 === 0) days[days.length-1] = 0; // 1/3은 오늘 기록 → '오늘 체크' 카드 채움
+    days.forEach((day, k)=>{
+      const prog = k / Math.max(1, n-1);
+      let grip, spread, tremor, risk;
+      if(wrist === "상담 권고"){
+        grip = baseGrip*(1+0.55*prog)+ru(-25,25); spread = baseSpread*(1-0.18*prog)+ru(-0.04,0.04);
+        tremor = baseTremor*(1+0.9*prog)+ru(-0.2,0.2);
+        risk = prog<0.4 ? "정상" : prog<0.8 ? "주의" : "상담 권고";
+      } else if(wrist === "주의"){
+        grip = baseGrip*(1+0.28*prog)+ru(-25,25); spread = baseSpread*(1-0.08*prog)+ru(-0.04,0.04);
+        tremor = baseTremor*(1+0.4*prog)+ru(-0.2,0.2);
+        risk = prog<0.6 ? "정상" : "주의";
+      } else {
+        grip = baseGrip+ru(-35,35); spread = baseSpread+ru(-0.06,0.06);
+        tremor = baseTremor+ru(-0.4,0.4); risk = "정상";
+      }
+      data.hand.push({ at:ts(day), hand:pick(["Right","Right","Left"]),
+        gripMs:+grip.toFixed(1), spread:+spread.toFixed(2), tremor:+tremor.toFixed(1), risk });
+    });
+
+    // ── 통증 일지 — 이상군은 손목 통증 위주, 정상군은 가벼운 기록 0~2건
+    if(wrist !== "정상"){
+      for(const day of sample([...Array(12).keys()], ri(2,4)).sort((a,b)=>b-a)){
+        const sev = (wrist==="상담 권고" && day<4) ? 3 : pick([1,2,2]);
+        const side = pick(["오른쪽","오른쪽","왼쪽"]);
+        const raws = [`${side} 손목이 일할 때 아픕니다`, `${side} 손목이 저리고 욱신거립니다`, `퇴근하면 ${side} 손목이 쑤십니다`];
+        data.diary.push({ at:ts(day), part:"손목", side, sev, raw:pick(raws) });
+      }
+    } else {
+      for(const day of sample([...Array(10).keys()].map(v=>v+2), ri(0,2)).sort((a,b)=>b-a))
+        data.diary.push({ at:ts(day), part:pick(["어깨","허리"]), side:"", sev:1, raw:"조금 뻐근합니다" });
+    }
+    data.diary.sort((a,b)=>a.at-b.at);
+
+    // ── 어깨: 절반 정도. 좌우차 소견은 이상군에게만 (종합 위험도 상한 유지)
+    if(rnd() < 0.55){
+      const asymBig = cap >= 1 && rnd() < 0.35;
+      const absl = ru(140,165);
+      const absr = absl - (asymBig ? ru(14,22) : ru(0,6));
+      data.shoulder.push({ at:ts(ri(0,10)), absL:+absl.toFixed(1), absR:+absr.toFixed(1),
+        asym:+Math.abs(absl-absr).toFixed(1), shrug:+ru(18,34).toFixed(1),
+        risk: asymBig ? "주의" : "정상" });
+    }
+
+    // ── 청력: 그라인더(3공단) 전원 + 고주파 저하 다수, 그 외 40% (상한 적용)
+    if(si === 2 || rnd() < 0.4){
+      const highBad = (si === 2 && cap >= 2 && rnd() < 0.8);
+      const mild = !highBad && cap >= 1 && rnd() < 0.5;
+      const tone = [0,0,
+        highBad ? pick([1,2]) : (mild ? 1 : 0),
+        highBad ? pick([2,3]) : (mild ? pick([0,1]) : 0)];
+      const word = { low:{ok:1,n:1}, mid:{ok:1,n:1}, high:{ok:highBad?0:2, n:2} };
+      const risk = highBad ? "상담 권고" : (Math.max(...tone) >= 1 ? "주의" : "정상");
+      data.hearing.push({ at:ts(ri(0,13)), tone, word, risk });
+    }
+
+    // ── 목 설문: 재봉(5차)·전자(4공단) 위주 (상한 적용)
+    if(si === 3 || si === 4 || rnd() < 0.3){
+      const heavy = cap >= 1 && rnd() < 0.4;
+      let ans = [0,1,2,3].map(()=> heavy ? pick([1,2]) : pick([0,0,1]));
+      let total = ans.reduce((a,b)=>a+b,0);
+      if(total > 2 && cap === 0){ ans = [1,1,0,0]; total = 2; }      // 정상군은 '낮음' 유지
+      else if(total > 5 && cap === 1){ ans = [2,1,1,1]; total = 5; } // 주의군은 '주의'까지만
+      const risk = total <= 2 ? "정상" : total <= 5 ? "주의" : "상담 권고";
+      data.neck.push({ at:ts(ri(0,13)), answers:ans, total, risk });
+    }
+
+    try{ localStorage.setItem("sonjikimi_data_v1_" + uid, JSON.stringify(data)); }catch(e){}
+    created++;
+  }
+  saveAccounts(accounts);
+  return { created, skipped };
+}
+function removeDemo(){
+  const accounts = loadAccounts();
+  let removed = 0;
+  for(const key of Object.keys(accounts)){
+    if(accounts[key].demo || /^demo\d\d$/.test(key)){
+      delete accounts[key];
+      try{ localStorage.removeItem("sonjikimi_data_v1_" + key); }catch(e){}
+      removed++;
+    }
+  }
+  saveAccounts(accounts);
+  return removed;
+}
+$("#btnSeedDemo").onclick = async ()=>{
+  const st = $("#seedStatus");
+  $("#btnSeedDemo").disabled = true;
+  st.textContent = "생성 중...";
+  try{
+    const r = await seedDemo();
+    st.textContent = `✅ ${r.created}명 생성 완료` + (r.skipped ? ` (기존 ${r.skipped}명 건너뜀)` : "") + " — demo01~demo30 / 비번 1234";
+    renderAdmin();
+  }catch(e){ console.error(e); st.textContent = "생성 중 오류가 났어요. 저장 공간을 확인해 주세요."; }
+  finally{ $("#btnSeedDemo").disabled = false; }
+};
+$("#btnRemoveDemo").onclick = ()=>{
+  const n = removeDemo();
+  $("#seedStatus").textContent = n ? `🗑️ 데모 작업자 ${n}명과 기록을 삭제했어요.` : "삭제할 데모 데이터가 없어요.";
+  renderAdmin();
+};
+
+// ═══ 초기 화면 그리기 (모든 정의 완료 후 1회) ═══
+buildQuick(); renderDiary(); renderHeat(); applyLang();
 </script>
 
 
@@ -1329,6 +1860,17 @@ function renderHearResult(){
     ? `<p style="font-size:16px; font-weight:700; color:var(--danger); margin-top:10px;">${L(HEAR_T.bad)}</p>`
     : `<p style="font-size:16px; font-weight:700; color:var(--ok); margin-top:10px;">${L(HEAR_T.good)}</p>`;
   $("#hearResult").innerHTML = toneRows + wordRow("low",L(HEAR_T.wLow)) + wordRow("mid",L(HEAR_T.wMid)) + wordRow("high",L(HEAR_T.wHigh)) + verdict;
+  // 결과 저장 (파이썬판 hearing-checks 이식 · 자가체크 요약이며 진단 아님)
+  const hearRisk = (highToneBad || highWordBad) ? "상담 권고"
+    : (hear.toneScore.some(s=>s>=1) || w.low.ok < w.low.n || w.mid.ok < w.mid.n) ? "주의" : "정상";
+  try{
+    const d = window.Store.load();
+    const arr = Array.isArray(d.hearing) ? d.hearing : [];
+    arr.push({ at:Date.now(), tone:hear.toneScore.slice(), word:hear.wordScore, risk:hearRisk });
+    window.Store.save({ hearing: arr });
+  }catch(e){}
+  updateLastLines();
+  if(window.renderComposite) window.renderComposite();
 }
 
 // 언어 전환 시 청력 화면의 진행 중 문구 갱신
@@ -1409,7 +1951,36 @@ $("#btnNeckResult").onclick = ()=>{
      <div style="margin-top:10px;">${STRETCHES.map(s=>`<div class="stretch-item">${L(s)}</div>`).join("")}</div>`;
   const hospBtn = $("#btnFindHosp");
   if(hospBtn) hospBtn.onclick = ()=> window.open("https://map.kakao.com/?q=" + encodeURIComponent("정형외과"), "_blank");
+  // 결과 저장 (파이썬판 neck-surveys 이식)
+  const neckRisk = total<=2 ? "정상" : total<=5 ? "주의" : "상담 권고";
+  try{
+    const d = window.Store.load();
+    const arr = Array.isArray(d.neck) ? d.neck : [];
+    arr.push({ at:Date.now(), answers:neckAns.slice(), total, risk:neckRisk });
+    window.Store.save({ neck: arr });
+  }catch(e){}
+  updateLastLines();
+  if(window.renderComposite) window.renderComposite();
 };
+
+// ── 지난 결과 줄 (청력·목 카드에 최근 체크 요약 표시) ──
+const LAST_T = {
+  label:{ ko:"지난 체크: ", vi:"Lần trước: ", en:"Last check: " },
+  none:{ ko:"", vi:"", en:"" },
+};
+function updateLastLines(){
+  try{
+    const d = window.Store.load();
+    const fmt = (r)=>{ const dt = new Date(r.at);
+      return `${L(LAST_T.label)}${dt.getMonth()+1}/${dt.getDate()} · ${L(RISK_I18N[r.risk]||{ko:r.risk})}`; };
+    const h = Array.isArray(d.hearing) && d.hearing.length ? d.hearing[d.hearing.length-1] : null;
+    const n = Array.isArray(d.neck) && d.neck.length ? d.neck[d.neck.length-1] : null;
+    const hEl = $("#hearLast"), nEl = $("#neckLast");
+    if(hEl) hEl.textContent = h ? "🗓️ " + fmt(h) : "";
+    if(nEl) nEl.textContent = n ? "🗓️ " + fmt(n) + ` (${n.total})` : "";
+  }catch(e){}
+}
+window.__refreshLastLines = updateLastLines;
 // 스트레칭 알림: 데모에선 토글 상태만 유지 + 미리듣기 제공 (실서비스: OS 로컬 알림)
 let neckTimer = null;
 $("#neckAlarm").onclick = function(){
@@ -1713,7 +2284,9 @@ function finishShoulder(){
     shrug: shrugBase ? Math.max(0, (shrugBase - shrugMin)/shrugBase*100) : null, // 으쓱 범위 %
   };
   shoulderHistory.push(rec);
+  rec.risk = riskOf(rec, SH_METRICS, baselineOf(shoulderHistory, SH_METRICS, true));
   window.Store.save({ shoulder: shoulderHistory }); // 기기 내 영구 저장 (계정별)
+  if(window.renderComposite) window.renderComposite();
   window.__todayChecked = true; renderToday();
   renderShoulderReport(rec);
   HandCheck.stop();
@@ -1751,7 +2324,10 @@ function finish(){
     tremor: tremorOf(steadyPts),                 // 떨림 지수
   };
   sessionHistory.push(rec);
+  // 위험도 산정(신호등과 동일 기준: z*worse >1.8 상담 권고 / >1.0 주의) 후 저장
+  rec.risk = riskOf(rec, METRICS, baselineOf(sessionHistory, METRICS, true));
   window.Store.save({ hand: sessionHistory }); // 기기 내 영구 저장 (계정별)
+  if(window.renderComposite) window.renderComposite();
   // 실서비스 연동 지점: rec을 PMPL 백엔드로 전송 (장기 베이스라인은 서버 계산 권장)
   window.__todayChecked = true;
   renderToday();
@@ -1815,6 +2391,18 @@ function baselineOf(history, metrics, excludeLast){
     if(vals.length >= 3){ const mu = mean(vals); b[m.k] = { mu, sd: stdFloor(vals, mu) }; }
   }
   return b;
+}
+// 위험도 산정: 신호등 판정과 동일 기준 (bad z>1.8 상담 권고 / >1.0 주의) — 파이썬판 이식
+function riskOf(rec, metrics, base){
+  if(!base) return "정상"; // 기준선 수집 중엔 비교 불가 → 정상 표기
+  let worst = 0;
+  for(const m of metrics){
+    if(rec[m.k] == null || !base[m.k]) continue;
+    const bad = ((rec[m.k] - base[m.k].mu) / base[m.k].sd) * m.worse;
+    if(bad > 1.8) worst = Math.max(worst, 2);
+    else if(bad > 1.0) worst = Math.max(worst, 1);
+  }
+  return ["정상","주의","상담 권고"][worst];
 }
 function metricRows(rec, metrics, base){
   return metrics.map(m=>{
