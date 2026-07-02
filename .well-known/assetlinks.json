@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.nahyun1111.sonjikimi",
+        "sha256_cert_fingerprints": ["62:31:8B:96:1E:4B:FC:9F:CE:7A:6B:A1:3B:B7:3D:8B:16:18:E2:DC:7F:85:37:EC:74:CA:10:CE:95:46:D0:FC"]
+      }
+    }]
