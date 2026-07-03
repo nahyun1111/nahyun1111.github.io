@@ -7,7 +7,7 @@
 <link rel="manifest" href="manifest.json" />
 <link rel="icon" type="image/png" href="icon-192.png" />
 <link rel="apple-touch-icon" href="icon-192.png" />
-<title>성서 손목 지킴이 — AI 근골격계 자가체크</title>
+<title>손 좀 봅시다 — AI 근골격계 자가체크</title>
 <!--
   ═══════════════════════════════════════════════════════════════
   성서 손목 지킴이 (프로토타입)
@@ -431,7 +431,7 @@
 
   <header class="topbar">
     <div class="topbar__row">
-      <div class="app-title">성서 <span class="accent">손목 지킴이</span></div>
+      <div class="app-title">손 좀 <span class="accent">봅시다</span></div>
       <div class="lang-chips" id="langChips">
         <button class="lang-chip" data-lang="ko">표준</button>
         <button class="lang-chip on" data-lang="dg">사투리</button>
@@ -959,14 +959,14 @@ const PARTS = [
 const SEV_RULES = [
   {sev:3, kw:["너무 아프","너무 아파","너무 아픕","많이 아프","많이 아파","많이 아픕","심하","심해","죽겠","rất đau","very pain","severe"]},
   {sev:0, kw:["덜 아프","덜 아파","덜 아픕","덜아프","안 아프","안 아파","괜찮","좋아졌","좋아요","나아졌","나았","đỡ đau","better","less pain"]},
-  {sev:1, kw:["뻐근","뻑적지근","조금","약간","살짝","hơi","slightly","a little"]},
-  {sev:2, kw:["아프","아파","아픕","아퍼","쑤시","쑤셔","저리","저려","결리","결려","욱신","đau","pain","hurt","sore","numb"]},
+  {sev:1, kw:["가끔","뻐근","뻑적지근","조금","약간","살짝","thỉnh thoảng","hơi","slightly","sometimes","a little"]},
+  {sev:2, kw:["자주","아프","아파","아픕","아퍼","쑤시","쑤셔","저리","저려","결리","결려","욱신","thường xuyên","đau","pain","hurt","sore","numb","often"]},
 ];
 const SEV_I18N = {
-  0:{ long:{ko:"호전됨", vi:"Đỡ hơn", en:"Improved"},  short:{ko:"호전", vi:"Đỡ", en:"Better"} },
-  1:{ long:{ko:"뻐근함", vi:"Mỏi/cứng", en:"Stiff"},   short:{ko:"뻐근", vi:"Mỏi", en:"Stiff"} },
-  2:{ long:{ko:"아픔", vi:"Đau", en:"Painful"},        short:{ko:"아픔", vi:"Đau", en:"Pain"} },
-  3:{ long:{ko:"심하게 아픔", vi:"Rất đau", en:"Severe pain"}, short:{ko:"심함", vi:"Rất đau", en:"Severe"} },
+  0:{ long:{ko:"통증 없음", vi:"Không đau", en:"No pain"},           short:{ko:"없음", vi:"Không", en:"None"} },
+  1:{ long:{ko:"가끔 아픔", vi:"Thỉnh thoảng đau", en:"Sometimes painful"}, short:{ko:"가끔", vi:"Đôi khi", en:"Rarely"} },
+  2:{ long:{ko:"자주 아픔", vi:"Thường xuyên đau", en:"Often painful"},     short:{ko:"자주", vi:"Hay đau", en:"Often"} },
+  3:{ long:{ko:"심하게 아픔", vi:"Rất đau", en:"Severe pain"},       short:{ko:"심함", vi:"Rất đau", en:"Severe"} },
 };
 const sevLabel = (s)=> L(SEV_I18N[s].long);
 const sevShort = (s)=> L(SEV_I18N[s].short);
