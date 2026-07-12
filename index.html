@@ -243,7 +243,8 @@ h3{font-size:15px;font-weight:700;letter-spacing:-.01em}
   background:#fff;border:1px solid var(--line);border-radius:var(--radius);
   overflow:hidden;box-shadow:var(--shadow);position:relative;
 }
-.mapbox svg{display:block;width:100%;height:auto}
+.mapbox > svg{display:block;width:100%;height:auto}
+.mapbox .leaflet-container svg,.mapbox .leaflet-pane svg{width:auto;height:auto;max-width:none}
 .map-sim-tag{
   position:absolute;left:10px;top:10px;
   background:rgba(18,49,94,.85);color:#fff;
